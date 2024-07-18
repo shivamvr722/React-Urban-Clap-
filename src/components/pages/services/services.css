@@ -1,0 +1,17 @@
+.servicecategory{
+    background-color: rgb(66, 66, 66);
+    color: white;
+    font-size: 22px;
+    margin:9px auto;
+    width: 350px;
+    padding: 10px;
+    border-radius: 7px;
+}
+
+.servicesCatContainer{
+    background-color: black;
+    width: 400px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 7px;
+}

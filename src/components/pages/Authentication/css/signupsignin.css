@@ -1,0 +1,10 @@
+.forgetlink{
+    color:white;
+    width: 150px;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.forgetlink:hover{
+    color:blue;
+}

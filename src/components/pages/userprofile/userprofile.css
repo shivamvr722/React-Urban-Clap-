@@ -1,0 +1,89 @@
+.userdivcontainer{
+    background-color: black;
+    width: 950px;
+    margin: 20px auto;
+    border-radius: 7px;
+    padding: 10px;
+}
+
+.usercontentcontainer{
+    /* background-color: blue; */
+    width: 900px;
+    height: 600px;
+    margin: 10px auto;
+    display: flex;
+    /* padding: px; */
+}
+
+.sidebar1, .sidebar2{
+    width: 250px;
+    height: 580px;
+    background-color: #5c5c5c;
+    border-radius: 7px;
+    margin: 0 auto;
+}
+
+.sidebar2 {
+    width: 620px;
+}
+
+.usernameS1 center {
+    border-radius: 7px;
+    font-size: 22px;
+    margin: 0 auto;
+    width: 230px;
+    color: white;
+    background-color: black;
+}
+
+
+.userdetailsS2{
+    display: flex;
+    width: 550px;
+    margin: 10px auto;
+    height: 400px;
+    padding: 10px;
+}
+
+
+.detailD1{
+    margin: 20px auto;
+    width: 550;
+    padding: 10px;
+    height: 300px;
+    /* background-color: green; */
+    margin: 10px;
+}
+
+h3{
+    font-size: 25px;
+    font-weight: bolder;
+    margin: 30px;
+    
+}
+
+.details{
+    background-color: #000000;
+    border-radius: 7px;
+    color: white;
+    margin: 10px auto;
+    display: flex;
+    font-size: 22px;
+    padding: 10px;
+}
+
+.profileImage img{
+    width: 150px;
+    height: 150px;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 70%;
+    /* background-color: yellowgreen; */
+}
+
+
+.userS1{
+    font-size: 22px;
+    font-weight: bold;
+    margin: 10px;
+}

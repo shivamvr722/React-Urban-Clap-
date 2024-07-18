@@ -1,0 +1,17 @@
+.servicesContainer1{
+    display: flex;
+    margin: 10px auto;
+    width: 1080px;
+}   
+/* 
+.servicesContainer1 div {
+    padding: 40px;
+} */
+
+.serviceCat{
+    padding: 20px;
+}
+
+.image1{
+    padding: 20px;
+}

@@ -1,0 +1,75 @@
+.tableUList{
+    margin: 20px auto;
+}
+
+.theadList tr th{
+    color:white;
+    font-size: larger;
+    padding: 20px;
+}
+
+.theadList tr{
+    background-color: black;
+    margin: 5px;
+    border-radius: 7px;
+}
+
+
+.tbodyList tr td{
+    background-color: #292929;
+    color:white;
+    font-size: larger;
+    padding: 20px;
+}
+
+
+.tbodyList tr{
+    border: 1px solid white;
+}
+
+.profileImage{
+    border-radius: 10px;
+}
+
+.search input{
+    background-color: #292929;
+    padding: 15px;
+    font-size: 22px;
+    margin: 10px;
+    border-radius: 7px;
+    color:white
+}
+
+
+
+
+.pagination {
+    display: flex;
+    border: 1px solid #ff0000;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .pagination button {
+    padding: 10px;
+  }
+  
+  .active {
+    background: black;
+    color: #fff;
+    border: 1px solid #fff;
+  }
+
+.loading{
+    background-color: blue;
+    font-size: larger;
+}
+
+
+.viewUpdateLink{
+    background-color: white;
+    color:black;
+    border-radius: 7px;
+    padding: 5px;
+    font-weight: bold;
+}

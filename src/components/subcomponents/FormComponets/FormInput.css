@@ -1,0 +1,30 @@
+.lableinput{
+    /* justify-content: space-between; */
+    display: flex;
+    justify-content: space-between;
+    background-color: #313131;
+    padding: 10px;
+    color:white;
+    align-items: center;
+    width: 410px;
+    margin: 10px auto;
+    border-radius: 7px;
+}
+
+.lableinput input {
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    border-radius: 7px;
+    padding: 3px 10px;
+    border: none;
+}
+
+label {
+    font-size: 18px;
+}
+
+.errormessage, .error{
+    font-size: small;
+    color:red;
+}
