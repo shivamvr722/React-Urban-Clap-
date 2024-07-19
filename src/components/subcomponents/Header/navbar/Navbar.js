@@ -32,6 +32,8 @@ const NavigationBar = () => {
   // updating navingation for admin, user and service provider
   if(currentUser.user_type.toLowerCase() === "superadmin"){
     navItems.push({ id:6, text: "Users", show:"/allusers" })
+    navItems.push({ id:7, text: "Services", show:"/servicespage" })
+    navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
   }
   // for the login and logout logic
   if(!accessToken){

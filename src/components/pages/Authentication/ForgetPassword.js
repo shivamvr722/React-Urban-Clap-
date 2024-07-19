@@ -9,9 +9,12 @@ import { useDispatch } from 'react-redux'
 import { setNewPasswordToken } from "../../../features/authenticationSlice"
 import { useNavigate } from "react-router-dom"
 import "./css/forgetPassword.css"
+import { useState } from "react"
+import ShowError from "../../subcomponents/FormComponets/ShowError"
 
 
 const ForgetPassword = () => {
+  const [errorMessage, setErrorMessage] = useState("")
   const dispatch = useDispatch()
   const navigate = useNavigate();
  
@@ -25,6 +28,7 @@ const ForgetPassword = () => {
         navigate("/setpassword"); // this is the navigation function which is helping to navigate to the confirm password page
       } catch (error) {
         console.log(error);
+        <ShowError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
       }
       actions.setTouched({});
       actions.setSubmitting(false);
@@ -45,6 +49,7 @@ const ForgetPassword = () => {
         <InputField obj={forgetPasswordFeed} key={forgetPasswordFeed.id}/>
         <Button name={"Generate Token"} type={"submit"} />
         <Button name={"Back"} type={"button"} handleAction={()=>{navigate("/")}} />
+        <ShowError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
       </form>
     )}
     </Formik>

@@ -5,11 +5,13 @@ import Button from "../../subcomponents/FormComponets/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import Heading1 from "../../subcomponents/HeadingCoponets/Heading1";
+
 
 const feed = [
   {
     "id": "up_fname",
-    "title": "ServiceType",
+    "title": "Service Type",
     "hint": "Enter Service",
     "name": "service_type",
     "type": "text",
@@ -52,6 +54,8 @@ const AddService = ({update, setUpdate, data, aState}) => {
 
   console.log(serviceForm);
   return(
+    <div className="addservicecontainer">
+    <Heading1 name={"Add New Service"} />
     <Formik 
       initialValues={{
         id: "",
@@ -67,6 +71,7 @@ const AddService = ({update, setUpdate, data, aState}) => {
       <Button name={"Back"} type={"button"} handleAction={()=>{navigate("/")}} />
       </Form> )}
     </Formik>
+    </div>
   )
 }
 

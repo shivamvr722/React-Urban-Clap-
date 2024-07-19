@@ -50,7 +50,6 @@ const ListAllUsers = () => {
   useEffect(() => {
     let usersFiltered = null
     if(filterUser || userCategory){
-      console.log(userCategory, "SFd");
       if (userCategory){
         usersFiltered = intialUserData.filter((user, i )=> (userCategory.toLowerCase() === user.user_type.toLowerCase()) && (user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase())))  
       } else {

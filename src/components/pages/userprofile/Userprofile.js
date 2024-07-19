@@ -7,13 +7,17 @@ import { addUser } from "../../../features/usersSlice"
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import Button from "../../subcomponents/FormComponets/Button"
 import DesplayUserDetail from "./DisplayUserDetails"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Form, useLocation, useNavigate } from "react-router-dom"
 import UpdateDetails from "./UpdateDetails"
 import profileDefault from "../../../assets/userprofileDefault.png"
+import UploadProfileImage from "./UpdateProfileImage"
+
+
 
 
 const UserprofileShow = () => {
   const [update, setUpdate] = useState(false)
+  const [updateImage, setUpdateImage] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { state } = useLocation();
@@ -29,7 +33,6 @@ const UserprofileShow = () => {
       if (error.response.status === 401) {
         navigate("/authredirect")
       }
-      
     }
   }
   
@@ -63,6 +66,18 @@ const UserprofileShow = () => {
   //   userData = usersData
   // }
 
+
+  const submitImageHandler = async (values, actions) => {
+    try{
+      // const response = await axios.post("http://127.0.0.1:8000/urban-company/profileimage/", values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}})
+      alert(values, "Uploaded")
+
+    } catch (error) {
+      alert("failed to upload")
+    }
+  }
+
+
   return(
     <>
     <div className="userdivcontainer">
@@ -73,6 +88,9 @@ const UserprofileShow = () => {
             <p className="userS1">User</p>
             <div className="profileImage">
               <a href={profileImage} target="_blank"><img src={profileImage} /></a>
+                {updateImage && <UploadProfileImage />}
+                {!updateImage ? <Button name="Show" handleAction={() => {setUpdateImage(!updateImage)}} /> : <Button name="Hide" handleAction={() => {setUpdateImage(!updateImage)}} />}
+              <a href={profileImage} target="_blank"><Button name="View" /></a>
             </div>
           </div>
           <div className="usernameS1">

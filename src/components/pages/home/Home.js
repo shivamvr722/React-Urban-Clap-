@@ -1,14 +1,14 @@
 import "./home.css"
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import Footer from "../../subcomponents/footers/footer"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import axios from "axios"
 import servicesImage from "../../../assets/serveces.webp"
 import { addUser } from "../../../features/usersSlice"
 import { useNavigate } from "react-router-dom"
 import Services from "../services/Services"
-import AddService from "../services/AddServices"
+import PopUp from "../../subcomponents/Popup"
 
 
 
@@ -16,6 +16,9 @@ import AddService from "../services/AddServices"
 const Home = ({link}) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [openPopup, setOpenPopup] = useState(false);
+  const HandleRemovePopUp = () => setOpenPopup(false);
+
 
   const fetchProfile = async () => {
     try {
@@ -50,7 +53,19 @@ const Home = ({link}) => {
               <img src={servicesImage} width={900} height={900} />
             </div>
           </div>
-          <AddService />
+          <div>
+            <div className='w-full p-5 flex justify-center items-center'>
+              <div>
+                <button
+                  onClick={() => setOpenPopup(true)}
+                  className='bg-blue-300 text-blue-500 border border-blue-400 rounded-md px-5 py-2 hover:bg-blue-100'
+                >
+                  Show Model PopUp
+                </button>
+              </div>
+              <PopUp openPopUp={openPopup} closePopUp={HandleRemovePopUp} />
+            </div>
+          </div>
         </div>
       <Footer />
     </>

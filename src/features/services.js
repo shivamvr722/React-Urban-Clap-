@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  users:{
+  services:{
     "id": "",
     "service_type" :""
   }
@@ -12,7 +12,7 @@ export const providedServices = createSlice({
   initialState,
   reducers: {
     addService: (state, action) => {
-      state.users = action.payload
+      state.services = action.payload
     },
   }
 })

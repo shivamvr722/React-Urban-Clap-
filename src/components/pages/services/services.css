@@ -4,14 +4,40 @@
     font-size: 22px;
     margin:9px auto;
     width: 350px;
-    padding: 10px;
+    padding: 5px;
     border-radius: 7px;
 }
 
-.servicesCatContainer{
+.servicesCatContainer, .addservicecontainer{
     background-color: black;
     width: 400px;
     padding: 10px;
     margin: 5px;
     border-radius: 7px;
+}
+
+.addservicecontainer{
+    width: 500px;
+    margin: 5px auto;
+}
+
+.addServiceContainer{
+    display: flex;
+    width: 1080px;
+    margin: 10px auto;
+}
+
+
+.showServicesContainer{
+    width: 1080px;
+    margin: 10px auto;
+    padding: 10px;
+    display: flex;
+}
+
+.cont{
+
+    width: 500px;
+    background-color: green;
+    height: 500px;
 }

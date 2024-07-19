@@ -59,7 +59,7 @@ const updateProfileValidationSchema = Yup.object().shape({
 })
 
 
-
+// http://127.0.0.1:8000/urban-company/profileimage/ (to add user profile pic)
 
 const UpdateDetails = ({update, setUpdate, data, aState}) => {
   const dispatch = useDispatch()

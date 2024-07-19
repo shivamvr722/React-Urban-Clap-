@@ -13,6 +13,11 @@ import Logout from './components/pages/Authentication/Logout';
 import UnAuthToken from './components/pages/Authentication/UnAuthToken';
 import Services from './components/pages/services/Services';
 import SubServices from './components/pages/services/SubServices';
+import AddService from './components/pages/services/AddServices';
+import ServicePage from './components/pages/services/ServicePage';
+import RatingsReviewPage from './components/pages/ReviewRatings/RatingReviewPage';
+// import ViewReviews from './components/pages/ReviewRatings/Review';
+// import ViewsRatings from './components/pages/ReviewRatings/Ratings';
 
 function App() {
   const [link, setLink] = useState("")
@@ -32,6 +37,11 @@ function App() {
           <Route path="/allusers" element={<ListAllUsers />} />
           <Route path="/services" element={<Services />} />
           <Route path="/subservices" element={<SubServices />} />
+          <Route path="/addservices" element={<AddService />} />
+          <Route path="/servicespage" element={<ServicePage />} />
+          <Route path="/reviewsrating" element={<RatingsReviewPage />} />
+          {/* <Route path="/reviews" element={<ViewReviews />} />
+          <Route path="/ratings" element={<ViewsRatings />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
