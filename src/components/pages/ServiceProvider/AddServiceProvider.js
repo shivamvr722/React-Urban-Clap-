@@ -1,23 +1,9 @@
-import axios from "axios";
-import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import InputField from "../../subcomponents/FormComponets/FormInput";
-import Button from "../../subcomponents/FormComponets/Button";
-import Heading1 from "../../subcomponents/HeadingCoponets/Heading1";
-import { addSubService } from "../../../features/subServices";
-import usePostData from "../../../Networks/usePostData";
+import { useNavigate } from "react-router-dom"
+import providerFeed from "./AddProviderFeeds"
+import { useDispatch } from "react-redux"
+import usePostData from "../../../Networks/usePostData"
 
-const feed = [
-  {
-    "id": "up_fname",
-    "title": "Sub Service",
-    "hint": "AC Repair",
-    "name": "sub_service",
-    "type": "text",
-  }, 
-]
+
 
 const addServiceSchema = Yup.object().shape({
   sub_service: Yup.string()
@@ -26,9 +12,7 @@ const addServiceSchema = Yup.object().shape({
 })
 
 
-
-
-const AddSubService = () => {
+const AddProviderSchema = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {isLoading, postData} = usePostData()
@@ -36,7 +20,7 @@ const AddSubService = () => {
   const servicesOld = useSelector(state => state.subServiceAction.subservices)
 
   const handleSubmit = async (values, action) => {
-    const response = await postData("subservice", values);
+    const response = await postData("services", values);
     if(response?.data){
       dispatch(addSubService([...servicesOld, response.data]))
       alert("data added successfully!")
@@ -56,7 +40,7 @@ const AddSubService = () => {
     })  
   }
 
-  const serviceSubForm = feed?.map((obj, i) => {
+  const serviceSubForm = providerFeed?.map((obj, i) => {
     return (
       <InputField obj={obj} key={obj.id} />
     )
@@ -66,7 +50,7 @@ const AddSubService = () => {
   console.log(serviceSubForm);
   return(
     <div className="addservicecontainer">
-    <Heading1 name={"Add Sub Service"} />
+    <Heading1 name={"Service Povider"} />
     <Formik 
       initialValues={{
         service_type: "",
@@ -93,4 +77,4 @@ const AddSubService = () => {
 
  
 
-export default AddSubService
+export default AddProviderSchema

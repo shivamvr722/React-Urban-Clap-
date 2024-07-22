@@ -96,9 +96,6 @@ const ListAllUsers = () => {
       return <th key={head}>{head}</th>
     })
 
-    // const handlePagination = (pageNumber) => {
-    //   setCurrentPage(pageNumber);
-    // };
 
     return(
       <>
@@ -106,7 +103,7 @@ const ListAllUsers = () => {
       {loading && <h1 className="loading">Loading...</h1>}
       <div className="search">
         <input type="text" id="search" placeholder="Search here..." onChange={(e) => setFilterUser(e.target.value)} value={filterUser} />
-        <select onChange={(e)=> setUserCategory(e.target.value)}>
+        <select onChange={(e)=> setUserCategory(e.target.value)} className="selectbox">
           <option value={''}>All User</option>
           <option value={"ServiceProvider"}>Service Provider</option>
           <option value={"user"}>User</option>

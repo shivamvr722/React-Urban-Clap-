@@ -4,8 +4,11 @@ import * as Yup from "yup";
 import Button from "../../subcomponents/FormComponets/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1";
+import usePostData from "../../../Networks/usePostData";
+import { addService } from "../../../features/services";
+// import { addService } from "../../../features/services";
 
 
 const feed = [
@@ -21,38 +24,41 @@ const feed = [
 const addServiceSchema = Yup.object().shape({
   service_type: Yup.string()
   .required("service is required")
-  .max(30, "name field should be less then 30 characteres"),
-
+  .max(30, "service field should be less then 30 characteres"),
 })
 
 
 
 
-const AddService = ({update, setUpdate, data, aState}) => {
+const AddService = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  let url = null
+  const {isLoading, postData} = usePostData()
   
+  const servicesData = useSelector(state => state.servicesActions.services)
   const handleSubmit = async (values, action) => {
-    url = "http://127.0.0.1:8000/urban-company/service/"
-    try{
-      const response = await axios.post(url, values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}});
-      navigate("/")
-    } catch (error) {
-      console.log("on error");
-      console.log(error)
+    const response = await postData("service", values);
+    if(response.data){
+      dispatch(addService([...servicesData, response?.data]))
+      alert("data added successfully!")
+    } else if (response?.error) {
+      console.log(response.error);
+      alert("failed")
     }
   }
 
-  const serviceForm = feed.map((obj, i) => {
+  const serviceForm = feed?.map((obj, i) => {
     return (
       <InputField obj={obj} key={obj.id} />
     )
   })
   
-
-  console.log(serviceForm);
+  
+  const services =  useSelector(state => state.servicesActions.services);
+  console.log(services, "Ser");
+  
+  // useDispatch(addService([...services, {id: 2, service_type: 'cleaning'}]))
+  // console.log(serviceForm);
   return(
     <div className="addservicecontainer">
     <Heading1 name={"Add New Service"} />

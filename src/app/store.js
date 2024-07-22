@@ -4,7 +4,8 @@ import userProfileReducer from "../features/usersSlice"
 import usersList from "../features/listUserSlice"
 import services from '../features/services'
 import subServices from '../features/subServices'
-
+import states from '../features/stateSlice'
+import cities from "../features/citySlice"
 
 
 export const store = configureStore({
@@ -14,7 +15,8 @@ export const store = configureStore({
     usersListAction: usersList,
     servicesActions: services,
     subServiceAction: subServices,
-  },
+    stateAction: states,
+  },  
 })
 
 

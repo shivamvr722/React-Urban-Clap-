@@ -1,10 +1,10 @@
-import { Formik, Form } from "formik"
+import { Formik, Form, Field } from "formik"
 import InputField from "../../subcomponents/FormComponets/FormInput"
 import * as Yup from "yup";
 import Button from "../../subcomponents/FormComponets/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../../features/usersSlice";
 
 const feed = [
@@ -35,7 +35,14 @@ const feed = [
     "hint": "Phone no",
     "name": "contact_number",
     "type": "phone"
-  }
+  },
+  // {
+  //   "id": "up_usertype",
+  //   "title": "User Type",
+  //   "hint": "Phone no",
+  //   "name": "user_type",
+  //   "type": "phone"
+  // }
 ]
 
 const updateProfileValidationSchema = Yup.object().shape({
@@ -56,6 +63,12 @@ const updateProfileValidationSchema = Yup.object().shape({
   .required("Contact Number is required")
   .max(15, "Contact field should be less then 15 characteres")
   .min(5, "Contact field should be more then 5 characters "),
+
+
+  // user_type: Yup.string()
+  // .required("User Type is required")
+  // .max(10, "User Type should be less then 10 characteres")
+  // .min(4, "Contact field should be more then 4 characters"),
 })
 
 
@@ -64,20 +77,19 @@ const updateProfileValidationSchema = Yup.object().shape({
 const UpdateDetails = ({update, setUpdate, data, aState}) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  let currentUser = useSelector((state)=> state.userProfileActions.user);
   let url = null
   
   const handleSubmit = async (values, action) => {
     if(aState){
-      url = `http://127.0.0.1:8000/urban-company/userprofiles/${values.id}/`
+      url = `${process.env.REACT_APP_API_BASE_URL}userprofiles/${values.id}/`
     } else {
-      url = `http://127.0.0.1:8000/urban-company/userprofile/${values.id}/`
+      url = `${process.env.REACT_APP_API_BASE_URL}userprofile/${values.id}/`
     }
     try{
       const response = await axios.put(url, values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}});
       console.log(aState, "astate", response.data);
       dispatch(addUser(response.data))
-
       setUpdate(prev => !prev)
       if (aState) {
         navigate("/profile", {state: { updatedUser: response.data }})
@@ -105,7 +117,8 @@ const UpdateDetails = ({update, setUpdate, data, aState}) => {
         first_name: data?.first_name,
         last_name: data?.last_name,
         email: data?.email,
-        contact_number: data?.contact_number
+        contact_number: data?.contact_number,
+        user_type: data?.user_type,
       }}
       validationSchema={updateProfileValidationSchema}
       onSubmit={handleSubmit}
@@ -113,6 +126,14 @@ const UpdateDetails = ({update, setUpdate, data, aState}) => {
       {({ isSubmitting, handleSubmit, errors }) => (
       <Form>
       {updateForm}
+      {currentUser?.user_type.toLowerCase() === "superadmin" 
+      &&
+      <Field as="select" name='user_type' className="selectbox">
+        <option value="user">User</option>
+        <option value="SuperAdmin">Super Admin</option>
+        <option value="serviceprovider">Service Provider</option>
+      </Field> }
+      <br></br>
       <Button name={"Update"} type={"submit"} />
       <Button name={"Back"} handleAction={(prev)=>{ setUpdate(!prev) }} />
       </Form> )}

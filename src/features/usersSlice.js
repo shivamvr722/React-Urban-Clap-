@@ -18,25 +18,12 @@ export const usersSlice = createSlice({
   reducers: {
     addUser: (state, action) => {
       state.user = action.payload
-    },
-
-    updateUser: (state, action) => {
-
-    },
-    deleleUser: (state, action) => {
-
-    },
-    updateProfileImage: (state, action) => {
-      
-    },
-    removeProfileImage: (state, action) => {
-
     }
   }
 })
 
 
 
-export const { addUser, updateUser, deleleUser, updateProfileImage, removeProfileImage } = usersSlice.actions
+export const { addUser } = usersSlice.actions
 export default usersSlice.reducer
 

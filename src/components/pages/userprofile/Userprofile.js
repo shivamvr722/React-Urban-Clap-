@@ -24,7 +24,7 @@ const UserprofileShow = () => {
   
   const fetchProfile = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/urban-company/userprofile/", {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}})
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}userprofile/`, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}})
       if(response.data.length > 0){
         dispatch(addUser(response?.data[0]))
       }
@@ -43,6 +43,7 @@ const UserprofileShow = () => {
   
   let aState = false
   let userData = useSelector((state)=> state.userProfileActions.user);
+  let currentUser = userData
   if (state?.userli?.id){
     // we get data as state using the Link from the all user list
     userData = state?.userli
@@ -60,22 +61,8 @@ const UserprofileShow = () => {
   } else {
     profileImage = profileDefault;
   }
-  // const usersData = useSelector(state => state.usersListAction.users);
-  // console.log(usersData);
-  // if(usersData.id){
-  //   userData = usersData
-  // }
+ 
 
-
-  const submitImageHandler = async (values, actions) => {
-    try{
-      // const response = await axios.post("http://127.0.0.1:8000/urban-company/profileimage/", values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}})
-      alert(values, "Uploaded")
-
-    } catch (error) {
-      alert("failed to upload")
-    }
-  }
 
 
   return(
@@ -89,7 +76,7 @@ const UserprofileShow = () => {
             <div className="profileImage">
               <a href={profileImage} target="_blank"><img src={profileImage} /></a>
                 {updateImage && <UploadProfileImage />}
-                {!updateImage ? <Button name="Show" handleAction={() => {setUpdateImage(!updateImage)}} /> : <Button name="Hide" handleAction={() => {setUpdateImage(!updateImage)}} />}
+                {!updateImage ? <Button name="Edit" handleAction={() => {setUpdateImage(!updateImage)}} /> : <Button name="Hide" handleAction={() => {setUpdateImage(!updateImage)}} />}
               <a href={profileImage} target="_blank"><Button name="View" /></a>
             </div>
           </div>
@@ -109,6 +96,7 @@ const UserprofileShow = () => {
               <DesplayUserDetail name={"Last Name"} value={userData.last_name} />
               <DesplayUserDetail name={"Email"} value={userData.email} />
               <DesplayUserDetail name={"Contact"} value={userData.contact_number} />
+              {(currentUser.user_type.toLowerCase() === "superadmin") && <DesplayUserDetail name={"User Type"} value={userData.user_type} />}
               </>
               :
               <UpdateDetails update={update} setUpdate={setUpdate} data={userData} aState={aState} />

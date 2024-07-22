@@ -16,8 +16,10 @@ import SubServices from './components/pages/services/SubServices';
 import AddService from './components/pages/services/AddServices';
 import ServicePage from './components/pages/services/ServicePage';
 import RatingsReviewPage from './components/pages/ReviewRatings/RatingReviewPage';
+import ShowServiceProvider from './components/pages/ServiceProvider/ShowServiceProvder';
 // import ViewReviews from './components/pages/ReviewRatings/Review';
 // import ViewsRatings from './components/pages/ReviewRatings/Ratings';
+// require('dotenv').config()
 
 function App() {
   const [link, setLink] = useState("")
@@ -40,6 +42,7 @@ function App() {
           <Route path="/addservices" element={<AddService />} />
           <Route path="/servicespage" element={<ServicePage />} />
           <Route path="/reviewsrating" element={<RatingsReviewPage />} />
+          <Route path="/providers" element={<ShowServiceProvider />} />
           {/* <Route path="/reviews" element={<ViewReviews />} />
           <Route path="/ratings" element={<ViewsRatings />} /> */}
         </Routes>
