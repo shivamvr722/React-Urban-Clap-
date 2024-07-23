@@ -23,19 +23,14 @@ const ShowServiceProvider = () => {
     const mappedData = providers?.map((obj, i )=> {
       return(
         <div key={obj.id}>
-          <h1>HElo</h1>
           <ProviderCard data={obj} />
         </div>
       )
     })
   
 
-
-  
-
   return(
     <div>
-        <h1>HE;p</h1>
         {mappedData}
     </div>
   )

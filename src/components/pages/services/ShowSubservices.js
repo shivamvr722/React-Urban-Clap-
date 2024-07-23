@@ -13,18 +13,18 @@ const ShowSubServices = () => {
   const dispatch = useDispatch()
 
 
-  const fetchData = async () => {
-    const apiData = await dataFetch("subservice")
-    if (apiData?.success) {
-      dispatch(addSubService(apiData?.data))
-    } else if (!apiData?.success){
-      console.log(apiData.error);
-    }
-  }
+  // const fetchData = async () => {
+  //   const apiData = await dataFetch("subservice")
+  //   if (apiData?.success) {
+  //     dispatch(addSubService(apiData?.data))
+  //   } else if (!apiData?.success){
+  //     console.log(apiData.error);
+  //   }
+  // }
  
-  useEffect(
-    () => { fetchData() },
-  [])
+  // useEffect(
+  //   () => { fetchData() },
+  // [])
 
 
   

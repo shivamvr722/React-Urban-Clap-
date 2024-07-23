@@ -12,7 +12,7 @@ const addServiceSchema = Yup.object().shape({
 })
 
 
-const AddProviderSchema = () => {
+const AddProvider = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {isLoading, postData} = usePostData()
@@ -77,4 +77,4 @@ const AddProviderSchema = () => {
 
  
 
-export default AddProviderSchema
+export default AddProvider

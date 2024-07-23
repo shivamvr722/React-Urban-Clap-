@@ -6,76 +6,67 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../../subcomponents/FormComponets/FormInput";
 import Button from "../../subcomponents/FormComponets/Button";
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1";  
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useFetchData from "../../../Networks/useFetchData";
+import "./book.css"
 
 
-const feed = [
-  {
-    "id": "add_city",
-    "title": "City",
-    "hint": "City",
-    "name": "city",
-    "type": "text",
-  }, 
-]
-
-const addServiceSchema = Yup.object().shape({
-  state: Yup.string()
-  .required("state is required")
-  .max(30, "name field should be less then 30 characteres"),
+const bookingSchema = Yup.object().shape({
+  // slotdatetime: Yup.string().datetime(),
+  service_address: Yup.string()
+  .required("address is required"),
 })
 
-const AddCity = ({update, setUpdate, data, aState}) => { 
+const AddOrder = ({data}) => { 
+  alert("hey", data.stateId, data.cityId, data.serviceId)
   const navigate = useNavigate()
-  const [state, setState] = useState("")
+  const { isLoading, dataFetch } = useFetchData()
+  // const [cities, setCities] = useState("")
   let url = null
 
+  // const fetchCities = async () => {
+  //   const apiData = await dataFetch('city')
+  //   if (apiData?.success) {
+  //     setCities(apiData?.data)
+  //   } else if (!apiData?.success){
+  //     navigate("/authredirect") 
+  //   }
+  // }
+
+
+  // useEffect( ()=> {fetchCities()}, [])
+
   const handleSubmit = async (values, action) => {
+    alert(values, ":eh")
     console.log(values);
-    url = `${process.env.REACT_APP_API_BASE_URL}city/`
-    try{
-      const response = await axios.post(url, values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}});
-      alert("city added successfully!")
-  
-    } catch (error) {
-      console.log("on error");
-      console.log(error)
-    }
   }
 
 
-  const servicesData = useSelector(state => state.servicesActions.services)
 
-  let servicesMap = ""
-  if (servicesData.length > 0){
-    servicesMap = servicesData?.map((service, i) => {
-      return <option key={service.id} value={service.id}>{service.service_type}</option>
-    })  
-  }
-
-  const mappedInputs = feed.map((obj, i) => {
-    return (
-      <InputField obj={obj} key={obj.id} />
-    )
-  })
-  
-
-  console.log(mappedInputs);
   return(
-    <div className="addservicecontainer">
-    <Heading1 name={"Add City"} />
+    <div className="addservicecontainer2">
+    <Heading1 name={"Book Service"} />
     <Formik 
       initialValues={{
-        state_id:"",
-        state: "",
+        slotdatetime: "",
+        service_address: "",
       }}
-      validationSchema={addServiceSchema}
+      validationSchema={bookingSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, handleSubmit, errors }) => (
-      <Form>
-        {mappedInputs}
-        <Button name={"Add"} type={"submit"} />
+      <Form className="formbook">
+        <Field type="text" id="timeslot" name="state"  value={data.stateId}/>
+        <Field type="text" id="timeslot" name="city"  value={data.cityId}/>
+        <Field type="text" id="timeslot" name="service"  value={data.serviceId}/>
+
+        <label htmlFor="timeslot">Time Slot:&nbsp;&nbsp;</label>
+        <Field type="datetime-local" id="timeslot" name="slotdatetime" />
+        <br/>
+        <label htmlFor="service_address">Address:&nbsp;&nbsp;</label>
+        <Field as="textarea" name="service_address"  id="service_address" />
+        <br></br>
+        <Button name={"Book"} type={"submit"} />
         <Button name={"Back"} type={"button"} handleAction={()=>{navigate("/")}} />
       </Form> )}
     </Formik>
@@ -85,4 +76,4 @@ const AddCity = ({update, setUpdate, data, aState}) => {
 
 
 
-export default AddCity
+export default AddOrder

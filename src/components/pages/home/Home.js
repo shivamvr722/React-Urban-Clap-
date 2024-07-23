@@ -8,6 +8,11 @@ import { useNavigate } from "react-router-dom"
 import Services from "../services/Services"
 import useFetchData from "../../../Networks/useFetchData"
 import DSCards from "../../subcomponents/cards/DSCards"
+import { addState } from "../../../features/stateSlice"
+import { addService } from "../../../features/services"
+import { addSubService } from "../../../features/subServices"
+import AddService from "../services/AddServices"
+import AddOrder from "../Booking/BookOrder"
 
 
 
@@ -15,6 +20,7 @@ const Home = ({ link }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { isLoading, dataFetch } = useFetchData()
+  const [cities, setCities] = useState("")
 
   const fetchProfile = async () => {
     const apiData = await dataFetch('userprofile')
@@ -24,9 +30,45 @@ const Home = ({ link }) => {
       navigate("/authredirect") 
     }
   }
+
+  const fetchStates = async () => {
+    const apiData = await dataFetch('state')
+    if (apiData?.success) {
+      console.log("success: ", apiData?.data);
+      dispatch(addState(apiData?.data))
+    }
+  }
+
+
+  const fetchServices = async () => {
+    const apiData = await dataFetch("service")
+    if (apiData?.success) {
+      dispatch(addService(apiData?.data))
+    } else if (!apiData?.success){
+      console.log(apiData.error);
+    }
+  }
+
+  const fetchSubServices = async () => {
+    const apiData = await dataFetch("subservice")
+    if (apiData?.success) {
+      dispatch(addSubService(apiData?.data))
+    } else if (!apiData?.success){
+      console.log(apiData.error);
+    }
+  }
+
+  const fetchCities = async () => {
+    const apiData = await dataFetch('city')
+    if (apiData?.success) {
+      setCities(apiData?.data)
+    } else if (!apiData?.success){
+      navigate("/authredirect") 
+    }
+  }
  
   useEffect(
-    () => { fetchProfile() } , 
+    () => { fetchProfile(); fetchStates(); fetchServices(); fetchSubServices(); fetchCities() } , 
   [])
 
   const userData = useSelector((state) => state.userProfileActions.user); // can send it to navbar letter to make diff betwin roles

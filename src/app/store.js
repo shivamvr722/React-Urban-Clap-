@@ -5,7 +5,6 @@ import usersList from "../features/listUserSlice"
 import services from '../features/services'
 import subServices from '../features/subServices'
 import states from '../features/stateSlice'
-import cities from "../features/citySlice"
 
 
 export const store = configureStore({
