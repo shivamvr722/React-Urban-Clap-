@@ -17,6 +17,8 @@ import AddService from './components/pages/services/AddServices';
 import ServicePage from './components/pages/services/ServicePage';
 import RatingsReviewPage from './components/pages/ReviewRatings/RatingReviewPage';
 import ShowServiceProvider from './components/pages/ServiceProvider/ShowServiceProvder';
+import Booking from './components/pages/Booking/Booking';
+import LocationPage from './components/pages/Locations/LocationPage';
 
 // import ViewReviews from './components/pages/ReviewRatings/Review';
 // import ViewsRatings from './components/pages/ReviewRatings/Ratings';
@@ -44,6 +46,8 @@ function App() {
           <Route path="/servicespage" element={<ServicePage />} />
           <Route path="/reviewsrating" element={<RatingsReviewPage />} />
           <Route path="/providers" element={<ShowServiceProvider />} />
+          <Route path='/booking' element={<Booking />} />
+          <Route path='/locations' element={<LocationPage />} />
           {/* <Route path="/reviews" element={<ViewReviews />} />
           <Route path="/ratings" element={<ViewsRatings />} /> */}
         </Routes>

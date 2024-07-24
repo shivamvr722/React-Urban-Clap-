@@ -33,8 +33,8 @@ const NavigationBar = () => {
   if(currentUser.user_type.toLowerCase() === "superadmin"){
     navItems.push({ id:6, text: "Users", show:"/allusers" })
     navItems.push({ id:7, text: "Services", show:"/servicespage" })
-    navItems.push({ id:9, text: "Location", show:"/servicespage" })
-    navItems.push({ id:10, text: "Bookings", show:"/servicespage" })
+    navItems.push({ id:9, text: "Location", show:"/locations" })
+    navItems.push({ id:10, text: "Bookings", show:"/booking" })
     navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
   }
   // for the login and logout logic

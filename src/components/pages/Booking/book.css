@@ -3,6 +3,29 @@
     color: white;
 }
 .formbook input{
+    background-color: rgb(148, 148, 148);
+}
+
+.fieldsdiv{
+    display: flex;
+    margin: 10px;
+}
+.formDiv{
+    padding: 20px;
+    border-radius: 7px;
+    color:white;
+    background-color: black;   
+}
+
+.bookingsDiv{
+    color: white;
+    margin: 10px auto;
+    width: 500px;
     background-color: black;
-    color:white
+}
+
+
+.books tr{
+    margin: 5px;
+    padding: 5px;
 }

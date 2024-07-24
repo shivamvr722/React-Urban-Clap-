@@ -52,7 +52,7 @@ const Services = () => {
     console.log(data, "Dn");
     setIsForm(true)
     setCards(false)
-    setBookForm(<AddOrder data={data} />)
+    setBookForm(<AddOrder data={data} setIsForm={setIsForm} setOpen={setOpen} />)
     
   }
 
