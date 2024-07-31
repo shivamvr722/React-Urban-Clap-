@@ -1,3 +1,35 @@
 .servicesCont2{
     color: white;
 }
+.servicesCatContainer{
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.servicesCatContainer table{
+    margin: 0 auto;
+    width: 400px;
+}
+
+.servicesCatContainer table tbody tr{
+    margin: 5px;
+    background-color: gray;
+    border-radius: 7px;
+    border: 2px solid black;
+}
+
+.servicesCatContainer table tbody tr td{
+    margin: 5px;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.btnspan{
+    background-color: #000000;
+    color: white;
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 7px;
+    padding: 5px;
+}

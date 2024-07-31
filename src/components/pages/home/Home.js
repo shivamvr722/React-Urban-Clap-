@@ -11,30 +11,60 @@ import DSCards from "../../subcomponents/cards/DSCards"
 import { addState } from "../../../features/stateSlice"
 import { addService } from "../../../features/services"
 import { addSubService } from "../../../features/subServices"
-import AddService from "../services/AddServices"
-import AddOrder from "../Booking/BookOrder"
+
 
 
 
 const Home = ({ link }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isLoading, dataFetch } = useFetchData()
+  const { isLoading, dataFetch } = useFetchData();
   const [cities, setCities] = useState("")
+  const [usersCount, setUsersCount] = useState(0)
+  const [providersCount, setProvidersCount] = useState(0);
+  const [bookingsCount, setBookingsCount] = useState(0);
+  const [servicesCount, setServicesCount] = useState(0)
+  const [pendingBookCount, setPendingBookCount] = useState(0)
+  const [subServiceCount, setSubServiceCount] = useState(0)
+  
 
-  const fetchProfile = async () => {
-    const apiData = await dataFetch('userprofile')
-    if (apiData?.success) {
-      dispatch(addUser(apiData?.data[0]))
-    } else if (!apiData?.success){
-      navigate("/authredirect") 
+  const currentUser = useSelector((state) => state.userProfileActions.user)
+
+  
+  const fetchUsersCount = async () => {
+    if(currentUser.user_type.toLowerCase() === "superadmin"){
+      const apiData = await dataFetch('userprofiles')
+      const apiData2S = await dataFetch('userprofiles/?p=1&user_type__iexact=ServiceProvider')
+      if (apiData2S?.success) {
+        setProvidersCount(apiData2S?.data?.count)
+      } 
+      if (apiData?.success) {
+        setUsersCount(apiData?.data?.count)
+      }
+    }
+  }
+  
+  const fetchBookings = async () => {
+    if(currentUser.user_type.toLowerCase() === "superadmin" || currentUser.user_type.toLowerCase() === "serviceprovider"){
+      const apiData = await dataFetch('bookings')
+      if (apiData?.success) {
+        let bcount = 0
+        if(apiData?.l)
+        console.log(apiData);
+        apiData?.data?.forEach((obj, i) => {
+          if(obj.service_status.toLowerCase() === "pending"){
+            bcount++;
+          }
+        })
+        setPendingBookCount(bcount)
+        setBookingsCount(apiData?.data?.length)
+      }
     }
   }
 
   const fetchStates = async () => {
     const apiData = await dataFetch('state')
     if (apiData?.success) {
-      console.log("success: ", apiData?.data);
       dispatch(addState(apiData?.data))
     }
   }
@@ -43,6 +73,7 @@ const Home = ({ link }) => {
   const fetchServices = async () => {
     const apiData = await dataFetch("service")
     if (apiData?.success) {
+      setServicesCount(apiData?.data?.length)
       dispatch(addService(apiData?.data))
     } else if (!apiData?.success){
       console.log(apiData.error);
@@ -53,6 +84,7 @@ const Home = ({ link }) => {
     const apiData = await dataFetch("subservice")
     if (apiData?.success) {
       dispatch(addSubService(apiData?.data))
+      setSubServiceCount(apiData?.data?.length)
     } else if (!apiData?.success){
       console.log(apiData.error);
     }
@@ -62,14 +94,13 @@ const Home = ({ link }) => {
     const apiData = await dataFetch('city')
     if (apiData?.success) {
       setCities(apiData?.data)
-    } else if (!apiData?.success){
-      navigate("/authredirect") 
     }
   }
  
   useEffect(
-    () => { fetchProfile(); fetchStates(); fetchServices(); fetchSubServices(); fetchCities() } , 
+    () => { fetchUsersCount(); fetchStates(); fetchServices(); fetchSubServices(); fetchCities(); fetchBookings() } , 
   [])
+  // fetchProfile();
 
   const userData = useSelector((state) => state.userProfileActions.user); // can send it to navbar letter to make diff betwin roles
 
@@ -77,7 +108,7 @@ const Home = ({ link }) => {
     <>
       <NavigationBar />
       <div className="maincontainer">
-        <DSCards />
+        <DSCards usersCount={usersCount} providersCount={providersCount} bookingsCount={bookingsCount} servicesCount={servicesCount} pendingBookCount={pendingBookCount} subServiceCount={subServiceCount}/>
         <Services />
       </div>
       <Footer />

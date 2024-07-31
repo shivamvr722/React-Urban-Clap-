@@ -1,4 +1,4 @@
-export const providerFeed = [
+const providerFeed = [
   {
     "id": "user",
     "title": "Username",
@@ -28,3 +28,5 @@ export const providerFeed = [
     "type": "number",
   },
 ]
+
+export default providerFeed

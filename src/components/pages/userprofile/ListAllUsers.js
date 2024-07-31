@@ -5,69 +5,81 @@ import { useDispatch, useSelector } from "react-redux"
 import "./listAllUser.css"
 import { Link, useNavigate } from "react-router-dom"
 import profileDefault from "../../../assets/userprofileDefault.png"
+import useFetchData from "../../../Networks/useFetchData"
+import { debounce } from "lodash"
+
+
 // import { addUserList } from "../../../features/listUserSlice"
 
 const ListAllUsers = () => {
+  const {isLoading, dataFetch} = useFetchData();
   const currentUser = useSelector((state) => state.userProfileActions.user)
   const [intialUserData, setInitialUserData] = useState("")
   const [userData, setUserData] = useState("")
   const [filterUser, setFilterUser] = useState("")
   const [userCategory, setUserCategory] = useState("")
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate("")
-
   const dispatch = useDispatch()
-  
-  // for pagination
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [postsPerPage, setPostsPerPage] = useState(10);
+
+  // for profile image
   let profileImage =  `http://localhost:8000:null`;
   if (profileImage.split("8000")[1] !== "null") {
     profileImage = `http://localhost:8000${userData.profile}`;
   } else {
-    profileImage = profileDefault;
+    profileImage = profileDefault;  
   }
   
+
+  // for fetching the users
   const users = async () => {
-    setLoading(true);
-    try{
-      const response = await axios.get("http://localhost:8000/urban-company/userprofiles/", {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}})      // dispatch(addUserList(response.data))
-      setInitialUserData(response?.data)
-      setUserData(response?.data)
+    let URL = ""
+    if(userCategory === "ServiceProvider" || userCategory === "user" || userCategory === "SuperAdmin"){
+      URL = `userprofiles/?p=${page}&user_type__iexact=${userCategory}`;
+    } else {
+      URL = `userprofiles/?p=${page}&first_name__icontains=${userCategory}`;
+    }
+    const apiData = await dataFetch(URL);
+    if (apiData?.success) {
+      setInitialUserData(apiData?.data)
+      setUserData(apiData?.data)
       setLoading(false);
-    } catch (error){
+    } else if (!apiData?.success){
       setLoading(false);
-      console.log(error)
     }
   }
   
   useEffect(() => {
-    users()
-  }, [])
+    const callApi = setTimeout(() => {
+      users()
+    }, 500)
+    return () => clearTimeout(callApi)
+
+  }, [page, userCategory, setPage])
     
   
   // for filter the search
-  useEffect(() => {
-    let usersFiltered = null
-    if(filterUser || userCategory){
-      if (userCategory){
-        usersFiltered = intialUserData.filter((user, i )=> (userCategory.toLowerCase() === user.user_type.toLowerCase()) && (user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase())))  
-      } else {
-        usersFiltered = intialUserData.filter((user, i )=> user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase()))
-      }
-      if(!usersFiltered.length){
-        return 
-      }
-      setUserData(usersFiltered)
-     } else {
-      setUserData(intialUserData)
-    }
-  }, [filterUser, userCategory])
-  // filter ends
-
+  // useEffect(() => {
+  //   let usersFiltered = null
+  //   if(filterUser || userCategory){
+  //     if (userCategory){
+  //       usersFiltered = intialUserData.filter((user, i )=> (userCategory.toLowerCase() === user.user_type.toLowerCase()) && (user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase())))  
+  //     } else {
+  //       usersFiltered = intialUserData.filter((user, i )=> user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase()))
+  //     }
+  //     if(!usersFiltered.length){
+  //       return 
+  //     }
+  //     setUserData(usersFiltered)
+  //    } else {
+  //     setUserData(intialUserData)
+  //   }
+  // }, [filterUser, userCategory])
+  
   if (userData){ 
-
-    let allUsers = userData?.map((user, i) => {
+    console.log(userData);
+    let allUsers = userData?.results?.map((user, i) => {
       return(
         <tr key={user.id}>
           <td>{i+1}</td>
@@ -102,13 +114,17 @@ const ListAllUsers = () => {
       <NavigationBar />
       {loading && <h1 className="loading">Loading...</h1>}
       <div className="search">
-        <input type="text" id="search" placeholder="Search here..." onChange={(e) => setFilterUser(e.target.value)} value={filterUser} />
-        <select onChange={(e)=> setUserCategory(e.target.value)} className="selectbox">
+       
+
+        <input type="text" id="search" placeholder="Search here..." onChange={(e) => setUserCategory(e.target.value)} value={userCategory} />
+        <select onChange={(e)=> setUserCategory(e.target.value)} className="selectbox" name='user_type__iexact'>
           <option value={''}>All User</option>
           <option value={"ServiceProvider"}>Service Provider</option>
           <option value={"user"}>User</option>
           <option value={"SuperAdmin"}>Super Admin</option>
         </select>
+
+          {/* user_type__iexact */}
       </div>
       <table className="tableUList">
         <thead className="theadList">
@@ -120,12 +136,9 @@ const ListAllUsers = () => {
           {allUsers}
         </tbody>
       </table>
-      {/* <Pagination
-        length={intialUserData.length}
-        currentPage={currentPage}
-        dataPerPage={postsPerPage}
-        handlePagination={handlePagination}
-      /> */}
+      <div>
+        <p>{userData?.previous && <span className="btnPagination" onClick={() => { setPage( page - 1 )}}>Prev</span>}<span className="currentPage">{page}</span>{userData?.next && <span className="btnPagination" onClick={() => { setPage( page + 1 )} }>Next</span>  }<span className="currentPage">({userData?.results?.length} / {userData.count})</span></p>
+      </div>
       </>
     )
   }
@@ -133,3 +146,11 @@ const ListAllUsers = () => {
 }
 
 export default ListAllUsers
+
+ {/* <input type="text" id="search" placeholder="Search here..." onChange={(e) => setFilterUser(e.target.value)} value={filterUser} />
+        <select onChange={(e)=> setUserCategory(e.target.value)} className="selectbox">
+          <option value={''}>All User</option>
+          <option value={"ServiceProvider"}>Service Provider</option>
+          <option value={"user"}>User</option>
+          <option value={"SuperAdmin"}>Super Admin</option>
+        </select> */}

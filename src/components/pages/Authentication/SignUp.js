@@ -3,7 +3,7 @@ import Heading1 from "../../subcomponents/HeadingCoponets/Heading1"
 import Button from "../../subcomponents/FormComponets/Button"
 import { singUpFieldsFeed } from "./feeds"
 import { singUpValidationSchema } from "./validationSchema"
-import { Formik } from 'formik';
+import { Field, Formik } from 'formik';
 import { useState } from "react"
 import axios from "axios"
 import ShowError from "../../subcomponents/FormComponets/ShowError"
@@ -17,6 +17,7 @@ const initialValues = {
   first_name: "",
   last_name: "",
   email:"",
+  user_type:"",
   password: "",
   password2: ""
 }
@@ -32,9 +33,9 @@ const SingUp = () => {
     
     axios.post(URL, values)
     .then((response) => {
-      alert(`Dear ${values.first_name}, Your form has been submitted successfully!`);
+      alert(`Dear ${values.first_name}, welcome to urban clap!`);
       setErrorMessage("")
-      navigate("/signin")
+      navigate("/")
     })
     .catch((error) => {
       alert("user created successfully", error)
@@ -65,8 +66,15 @@ const SingUp = () => {
     >
     {({ isSubmitting, handleSubmit, errors }) => (
     <form onSubmit={handleSubmit} method="post">  
+      <Heading1 name={"Urban Clap"} />
       <Heading1 name={"Sing Up"}  /> 
       {mappedFileds}
+      <label htmlFor="user_type" style={{color:"white"}}>Register As: </label>
+      <Field as="select" name="user_type" id="user_type" className="selectbox">
+        <option>register as</option>
+        <option value={'User'}>User</option>
+        <option value={'ServiceProvider'}>Service Provider</option>
+      </Field>
       <p onMouseDown={()=>{setIsPassword(!isPassword)}}><AiOutlineEye className="eyes"/></p>
       <Button name={"Sing Up"} type={"submit"} />
       <Button name={"Sing In"} type={"button"} handleAction={()=>{navigate("/")}} />

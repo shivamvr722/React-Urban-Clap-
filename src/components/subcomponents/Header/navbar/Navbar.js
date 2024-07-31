@@ -32,9 +32,16 @@ const NavigationBar = () => {
   // updating navingation for admin, user and service provider
   if(currentUser.user_type.toLowerCase() === "superadmin"){
     navItems.push({ id:6, text: "Users", show:"/allusers" })
+    navItems.push({ id:11, text: "Providers", show:"/providers" })
     navItems.push({ id:7, text: "Services", show:"/servicespage" })
     navItems.push({ id:9, text: "Location", show:"/locations" })
     navItems.push({ id:10, text: "Bookings", show:"/booking" })
+    navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
+  } else if(currentUser.user_type.toLowerCase() === "serviceprovider") {
+    navItems.push({ id:7, text: "Services", show:"/addservice" })
+    navItems.push({ id:10, text: "Bookings", show:"/booking" })
+    navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
+  } else {
     navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
   }
   // for the login and logout logic

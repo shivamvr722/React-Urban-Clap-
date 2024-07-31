@@ -27,15 +27,16 @@ const Services = () => {
   const fetchCities = async () => {
     const apiData = await dataFetch('city')
     if (apiData?.success) {
-      setCities(apiData?.data)
+      setCities(apiData?.data?.results)
     } 
   }
   
 
   const fetchProviders = async () => {
     const apiData = await dataFetch("services")
-    if (apiData?.success) {      
-      setProviders(apiData?.data)
+    if (apiData?.success) {
+      console.log(apiData.data?.results, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+      setProviders(apiData?.data?.results)
     } else if (!apiData?.success){
       console.log(apiData.error);
     }
@@ -67,11 +68,12 @@ const Services = () => {
         return(`${data.sub_service_type}` === `${servicesData.subId}`)
       })
       
-      const filteredState = statesList?.filter((data, i) => `${data.id}` === `${providers[i]?.state}`)
-      const filteredCity = cities?.filter((data, i) => `${data.id}` === `${providers[i]?.city}`)
-      const serviceData = {...servicesData, state: filteredState, city: filteredCity}
+      // const filteredState = statesList?.filter((data, i) => `${data.id}` === `${providers[i]?.state}`)
+      // const filteredCity = cities?.filter((data, i) => `${data.id}` === `${providers[i]?.city}`)
 
+      console.log(providers, "##############",  filtedProvideres);
       const serviceProviderCards = filtedProvideres?.map((data, i) => {
+        const serviceData = {...servicesData, providerId: filtedProvideres?.[i]?.id, state: filtedProvideres?.[i].getStates?.[0].state, city: filtedProvideres?.[i].getCity?.[0]?.city}
         return <ProviderCard data={data} onBookServiceClick={onBookServiceClick} servicesData={serviceData} key={data.id} />
       })
       setServiceProviderCards(serviceProviderCards)
@@ -97,6 +99,7 @@ const Services = () => {
       setOpen(true)
     } else {
       alert("sorry no services available for selected option!")
+      setOpen(false)  
     }
   }
 
@@ -124,8 +127,8 @@ const Services = () => {
         {serviceMapped}
       </div>
       <div>
-      {cards ? <PopUpContainer open={open} setOpen={setOpen}>{serviceProviderCards}</PopUpContainer> : <PopUpContainer open={open} setOpen={setOpen}>{filteredSubServices}</PopUpContainer>}
-      {isForm &&  <PopUpContainer open={open} setOpen={setOpen}>{bookForm}</PopUpContainer> }
+      {cards ? <PopUpContainer open={open} cards={cards} isForm={isForm} setCards={setCards} setIsForm={setIsForm} setOpen={setOpen}>{serviceProviderCards}</PopUpContainer> : <PopUpContainer cards={cards} setCards={setCards}  open={open} setOpen={setOpen}>{filteredSubServices}</PopUpContainer>}
+      {isForm &&  <PopUpContainer open={open} cards={cards} isForm={isForm} setCards={setCards} setIsForm={setIsForm} setOpen={setOpen}>{bookForm}</PopUpContainer> }
       </div>
     </div>
   )
@@ -136,9 +139,7 @@ const Services = () => {
 export default Services
 
 
- // const fetchData = async () => {
-  //   const apiData = await dataFetch("service")
-  //   if (apiData?.success) {
+ // const fetchData = async () =>setOpen(true)
   //     dispatch(addService(apiData?.data))
   //   } else if (!apiData?.success){
   //     console.log(apiData.error);

@@ -1,0 +1,48 @@
+.fieldcontainer{
+    display: flex;
+}
+
+.serviceImage{
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.docLink{
+    background-color: black;
+    color: white;
+    font-size: large;
+    border-radius: 7px;
+    padding: 5px 10px;
+}
+
+.varification{
+    background-color: rgb(59, 58, 58);
+    color: white;
+    font-size: large;
+    border-radius: 7px;
+    padding: 5px 10px;
+}
+
+.serviceListDiv{
+    margin: 10px auto;
+    width: 1380px;
+}
+
+.serviceListDiv table tr{
+    background-color: black;
+    color: white;
+    margin: 2px;
+    border: 1px solid white;
+}
+
+.serviceListDiv table tr{
+    padding: 5px;
+}
+
+.serviceListDiv table th{
+    padding: 10px 2px;
+    font-size: 18px;
+}

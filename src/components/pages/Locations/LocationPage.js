@@ -1,6 +1,7 @@
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import AddCity from "./AddCities"
 import AddState from "./AddState"
+import ShowCities from "./ShowCities"
 import ShowStates from "./ShowCityStates"
 
 const LocationPage = () => {
@@ -11,6 +12,7 @@ const LocationPage = () => {
         <AddCity />
         <AddState />
         <ShowStates />
+        <ShowCities />
       </div>
     </div>
   )

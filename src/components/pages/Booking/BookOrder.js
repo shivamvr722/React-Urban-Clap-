@@ -14,12 +14,14 @@ const bookingSchema = Yup.object().shape({
 })
 
 const AddOrder = ({data, setIsForm, setOpen}) => { 
+  console.log(data, "$$$$$$$$$$$$$$$$$$$$");
   const navigate = useNavigate()
   const { isLoading, postData } = usePostData()
 
 
   const handleSubmit = async (values, action) => {
-    const response = await postData("bookings", {...values,state: data.stateId, city:data.cityId, service:data.serviceId})
+    console.log(data, "This is the values ");
+    const response = await postData("bookings", {...values,state: data.stateId, city:data.cityId, service:data.providerId})
     if(response.status === 201){
       alert("Order Booked Successfully!")
       setIsForm(false)

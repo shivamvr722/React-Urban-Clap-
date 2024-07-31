@@ -3,7 +3,7 @@ import logo from "../../../assets/uclogo.png"
 
 const HorizontalMiniCard = (props) => {
   const handlerForServiceProvider = () => {
-    console.log("hello from handler");
+    console.log("hello from handler", props?.name);
     props.onSubServiceClick({"subId": props?.subId, "serviceId": props?.serviceId, "name": props?.name})
   }
 

@@ -8,6 +8,7 @@ import AddCity from "../Locations/AddCities"
 import ShowStates from "../Locations/ShowCityStates"
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import SubServices from "./SubServices"
+import AddProviderServices from "../ServiceProvider/AddServiceProvider"
 
 const ServicePage = () => {  
   const data = useFetchData()
@@ -18,6 +19,7 @@ const ServicePage = () => {
         <AddService />
         <AddSubService />
       </div>
+        <AddProviderServices />
       <div className="showServicesContainer">
         <Services />
         <ShowSubServices />

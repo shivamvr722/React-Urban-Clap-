@@ -25,7 +25,7 @@ const addServiceSchema = Yup.object().shape({
   .max(30, "name field should be less then 30 characteres"),
 })
 
-const AddCity = ({update, setUpdate, data, aState}) => { 
+const AddCity = () => { 
   const navigate = useNavigate()
   const [state, setState] = useState("")
   let url = null

@@ -5,8 +5,8 @@ import ForgetPassword from './components/pages/Authentication/ForgetPassword';
 import ConfirmpPassword from './components/pages/Authentication/ConfirmPassword';
 import ListAllUsers from './components/pages/userprofile/ListAllUsers';
 import Home from './components/pages/home/Home';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
 import './App.css';
 import UserprofileShow from './components/pages/userprofile/Userprofile';
 import Logout from './components/pages/Authentication/Logout';
@@ -19,6 +19,13 @@ import RatingsReviewPage from './components/pages/ReviewRatings/RatingReviewPage
 import ShowServiceProvider from './components/pages/ServiceProvider/ShowServiceProvder';
 import Booking from './components/pages/Booking/Booking';
 import LocationPage from './components/pages/Locations/LocationPage';
+import { addUser } from './features/usersSlice';
+import useFetchData from './Networks/useFetchData';
+import { useDispatch } from 'react-redux';
+import NotFound from './components/subcomponents/NotFound';
+import ProvidersList from './components/pages/ServiceProvider/ProvidersList';
+import AddProviderServices from './components/pages/ServiceProvider/AddServiceProvider';
+import AddServicesPage from './components/pages/ServiceProvider/AddServicesPage';
 
 // import ViewReviews from './components/pages/ReviewRatings/Review';
 // import ViewsRatings from './components/pages/ReviewRatings/Ratings';
@@ -26,13 +33,27 @@ import LocationPage from './components/pages/Locations/LocationPage';
 
 function App() {
   const [link, setLink] = useState("")
+  const [user,  setUser] = useState()
+  const [orderCount, setOrderCount] = useState(0)
+  const {isLoading, dataFetch} = useFetchData()
+  const dispatch = useDispatch()
+  
 
+  const fetchProfile = async () => {
+    const apiData = await dataFetch('userprofile')
+    if (apiData?.success) {
+      dispatch(addUser(apiData?.data[0]))
+    }
+  }
+
+  useEffect(()=>{fetchProfile()}, []) 
+
+  
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           {!localStorage.getItem("access") ? <Route path="/" element={<SingIn />} /> : <Route path="/" element={<Home link={link} />} />}
-          {/* <Route path="/" element={<SingIn />} /> */}
           <Route path="/signup" element={<SingUp />} />
           <Route path="/forget" element={<ForgetPassword />} />
           <Route path="/setpassword" element={<ConfirmpPassword />} />
@@ -45,11 +66,11 @@ function App() {
           <Route path="/addservices" element={<AddService />} />
           <Route path="/servicespage" element={<ServicePage />} />
           <Route path="/reviewsrating" element={<RatingsReviewPage />} />
-          <Route path="/providers" element={<ShowServiceProvider />} />
+          <Route path="/providers" element={<ProvidersList />} />
+          <Route path="/addservice" element={<AddServicesPage />} />
           <Route path='/booking' element={<Booking />} />
           <Route path='/locations' element={<LocationPage />} />
-          {/* <Route path="/reviews" element={<ViewReviews />} />
-          <Route path="/ratings" element={<ViewsRatings />} /> */}
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>

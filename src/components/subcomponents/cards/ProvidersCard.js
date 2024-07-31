@@ -6,16 +6,21 @@ const ProviderCard = ({data, servicesData, onBookServiceClick}) => {
     ImageURL = logo
   }
 
-  const state = servicesData.state[0].state;
-  const city = servicesData.city[0].city;
+  const state = servicesData.state;
+  const city = servicesData.city;
+  // const state= ""
+  // const city = ""
+  console.log(servicesData, "SDATA");
+  // const city = servicesData.city[0].city_id;
+  const providerId = servicesData.providerId
   const name = servicesData.name
   const serviceId = data.service_type;
   const subServiceid  = data.sub_service_type;
-  const stateId = data.state;
-  const cityId = data.city
-
+  const stateId = data.state_id;
+  const cityId = data.city_id;
+  
   const bookingDataHandler = () => {
-    data = {"stateId": stateId, "cityId": cityId, "serviceId": serviceId}
+    data = {"stateId": stateId, "cityId": cityId, "providerId": providerId}
     onBookServiceClick(data)
   }
 

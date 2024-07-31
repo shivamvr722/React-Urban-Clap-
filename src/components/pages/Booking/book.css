@@ -17,14 +17,26 @@
     background-color: black;   
 }
 
-.bookingsDiv{
+.bookingsDiv table{
     color: white;
     margin: 10px auto;
-    width: 500px;
-    background-color: black;
+    width: 1080px;
+    background-color: red;
 }
 
+.bookingsDiv table tr{
+    background-color: black;
+    border: 2px solid white;
+}
+.bookingsDiv table td, th{
+    margin: 15px;
+    padding: 15px;
+}
 
+.booking{
+    font-size: 22px;
+    font-weight: bold;
+}
 .books tr{
     margin: 5px;
     padding: 5px;

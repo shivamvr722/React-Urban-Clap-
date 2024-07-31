@@ -23,7 +23,7 @@ const ShowServiceProvider = () => {
     const mappedData = providers?.map((obj, i )=> {
       return(
         <div key={obj.id}>
-          <ProviderCard data={obj} />
+          {console.log(obj, "Rx")}
         </div>
       )
     })
@@ -31,7 +31,7 @@ const ShowServiceProvider = () => {
 
   return(
     <div>
-        {mappedData}
+      {mappedData}
     </div>
   )
   }

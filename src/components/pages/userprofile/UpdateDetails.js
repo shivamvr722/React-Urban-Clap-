@@ -126,13 +126,13 @@ const UpdateDetails = ({update, setUpdate, data, aState}) => {
       {({ isSubmitting, handleSubmit, errors }) => (
       <Form>
       {updateForm}
-      {currentUser?.user_type.toLowerCase() === "superadmin" 
+      {/* {currentUser?.user_type.toLowerCase() === "superadmin" 
       &&
-      <Field as="select" name='user_type' className="selectbox">
+      <Field as="select" name='user_type' className="selectbox" disable>
         <option value="user">User</option>
         <option value="SuperAdmin">Super Admin</option>
         <option value="serviceprovider">Service Provider</option>
-      </Field> }
+      </Field> } */}
       <br></br>
       <Button name={"Update"} type={"submit"} />
       <Button name={"Back"} handleAction={(prev)=>{ setUpdate(!prev) }} />

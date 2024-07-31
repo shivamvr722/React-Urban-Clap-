@@ -3,7 +3,6 @@ import InputField from "../../subcomponents/FormComponets/FormInput"
 import * as Yup from "yup";
 import Button from "../../subcomponents/FormComponets/Button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1";
 import usePostData from "../../../Networks/usePostData";
@@ -55,6 +54,7 @@ const AddService = () => {
   
   
   const services =  useSelector(state => state.servicesActions.services);
+  
   console.log(services, "Ser");
   
   // useDispatch(addService([...services, {id: 2, service_type: 'cleaning'}]))

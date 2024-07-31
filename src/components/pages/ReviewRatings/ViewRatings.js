@@ -30,7 +30,7 @@ const ViewsRatings = () => {
   let ratingsMapped = []
   if(ratings.length > 0){   
     ratingsMapped = ratings?.map((obj, i)=>{
-      return <tr key={obj.id}><td>{obj.ratings}</td><td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td></tr>
+      return <tr key={obj.id}><td>{obj.user}</td><td>{obj.services}</td><td>{obj.ratings}</td><td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td></tr>
     })
   }
 
@@ -43,6 +43,8 @@ const ViewsRatings = () => {
         <table>
           <thead>
             <tr>
+              <th>Username</th>
+              <th>Services</th>
               <th>Ratings</th>
               <th>Edit</th>
               <th>Update</th>

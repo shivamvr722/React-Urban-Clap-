@@ -5,7 +5,7 @@ import ViewReviews from "./ViewReview"
 const RatingsReviewPage = () => {
   return (
     <div>
-    <NavigationBar />
+      <NavigationBar />
     <div>
       <ViewReviews />
       <ViewsRatings />

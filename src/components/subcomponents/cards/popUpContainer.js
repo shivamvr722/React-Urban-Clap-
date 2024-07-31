@@ -1,9 +1,22 @@
 import { useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { propTypesDefaultValue } from '@material-tailwind/react/types/components/slider';
 
 export default function PopUpContainer(props) {
+  const closeHanlder = () => {
+    if(props.open){
+      props.setOpen(false);
+    }
+    if(props.cards) {
+      props.setCards(false);
+    }
+    if(props.isForm) {
+      props.setIsForm(false);
+    }
+  }
+
   return (
-    <Dialog open={props.open} onClose={props.setOpen} className="relative z-10">
+    <Dialog open={props.open} onClose={() => closeHanlder()} className="relative z-10">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -30,7 +43,7 @@ export default function PopUpContainer(props) {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            {/* <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
                 onClick={() => props.setOpen(false)}
@@ -41,12 +54,12 @@ export default function PopUpContainer(props) {
               <button
                 type="button"
                 data-autofocus
-                onClick={() => props.setOpen(false)}
+                onClick={() => {props.setOpen(false);}}
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
                 Cancel
               </button>
-            </div>
+            </div> */}
           </DialogPanel>
         </div>
       </div>

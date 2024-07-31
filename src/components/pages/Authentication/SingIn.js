@@ -58,6 +58,7 @@ const SingIn = () => {
     >
       {({ isSubmitting, handleSubmit, errors }) => (
       <Form  onSubmit={handleSubmit} method="post">
+        <Heading1 name={"Urban Clap"} />
         <Heading1 name="Sing In"/>
         {mappedFileds}
         <p onMouseDown={()=>{setIsPassword(!isPassword)}}><AiOutlineEye className="eyes"/></p>

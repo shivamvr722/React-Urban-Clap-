@@ -67,6 +67,7 @@ const UserprofileShow = () => {
 
   return(
     <>
+    <NavigationBar />
     <div className="userdivcontainer">
       <Heading1 name={"User Profile"} />
       <div className="usercontentcontainer">
