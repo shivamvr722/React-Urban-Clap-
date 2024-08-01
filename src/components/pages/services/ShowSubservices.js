@@ -1,32 +1,11 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import "./services.css"
-import axios from "axios"
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1"
-import { useDispatch, useSelector } from "react-redux"
-import { addSubService } from "../../../features/subServices";
-import useFetchData from "../../../Networks/useFetchData"
+import { useSelector } from "react-redux"
+
 
 const ShowSubServices = () => {
-  // const { isLoading, apiData, serverError } = useFetchData("subservice");
-  const { isLoading, dataFetch } = useFetchData()
   const [subServicesId, setSubServicesId] = useState("2")
-  const dispatch = useDispatch()
-
-
-  // const fetchData = async () => {
-  //   const apiData = await dataFetch("subservice")
-  //   if (apiData?.success) {
-  //     dispatch(addSubService(apiData?.data))
-  //   } else if (!apiData?.success){
-  //     console.log(apiData.error);
-  //   }
-  // }
- 
-  // useEffect(
-  //   () => { fetchData() },
-  // [])
-
-
   
   let serviceMapped = ""
   let subServiceMapped = ""

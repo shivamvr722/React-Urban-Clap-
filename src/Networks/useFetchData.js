@@ -7,7 +7,7 @@ const useFetchData = () => {
   
   const dataFetch = async (urlEndPoint) => {
     let URL = ""
-    if(urlEndPoint.includes("/?p=")){
+    if(urlEndPoint.includes("/?")){
       URL = `${process.env.REACT_APP_API_BASE_URL}${urlEndPoint}`
     } else {
       URL = `${process.env.REACT_APP_API_BASE_URL}${urlEndPoint}/`

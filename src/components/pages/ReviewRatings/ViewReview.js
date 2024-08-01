@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1"
-import "./reviews.css"
+import "./reviews_ratings.css"
 import useFetchData from "../../../Networks/useFetchData";
 
 
@@ -36,7 +36,7 @@ const ViewReviews = () => {
   let reviewMapped = []
   if(reviews.length > 0){   
     reviewMapped = reviews?.map((obj, i)=>{
-      return <tr key={obj.id}><td>{obj.user}</td><td>{obj.services}</td><td>{obj.review}</td><td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td></tr>
+      return <tr key={obj.id}><td>{obj.user}</td><td>{obj.services}</td><td>{obj.review}</td></tr> //<td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td>
     })
   }
 
@@ -46,15 +46,15 @@ const ViewReviews = () => {
   return(
     <div className="reviews">
       <Heading1 name={"Reviews"} />
-      <div className="tablereview">
+      <div className="bookingsDiv">
         <table>
           <thead>
             <tr>
               <th>Username</th>
               <th>Services</th>
               <th>Review</th>
-              <th>Edit</th>
-              <th>Update</th>
+              {/* <th>Edit</th>
+              <th>Update</th> */}
             </tr>
           </thead>
           <tbody>

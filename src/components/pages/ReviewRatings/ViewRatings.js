@@ -3,7 +3,7 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1"
-import "./reviews.css"
+import "./reviews_ratings.css"
 
 
 
@@ -30,24 +30,22 @@ const ViewsRatings = () => {
   let ratingsMapped = []
   if(ratings.length > 0){   
     ratingsMapped = ratings?.map((obj, i)=>{
-      return <tr key={obj.id}><td>{obj.user}</td><td>{obj.services}</td><td>{obj.ratings}</td><td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td></tr>
+      return <tr key={obj.id}><td>{obj.user}</td><td>{obj.services}</td><td>{obj.ratings}</td></tr> //<td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td>
     })
   }
 
   
 
   return(
-    <div className="reviews">
+    <div className="ratings">
       <Heading1 name={"Ratings"} />
-      <div className="tablereview">
+      <div className="bookingsDiv">
         <table>
           <thead>
             <tr>
               <th>Username</th>
               <th>Services</th>
               <th>Ratings</th>
-              <th>Edit</th>
-              <th>Update</th>
             </tr>
           </thead>
           <tbody>

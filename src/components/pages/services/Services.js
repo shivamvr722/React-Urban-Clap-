@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import "./services.css"
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1"
 import { useDispatch, useSelector } from "react-redux"
-import { addService } from "../../../features/services"
 import useFetchData from "../../../Networks/useFetchData"
 import ServiceCards from "../../subcomponents/cards/ServiceCards"
 import PopUpContainer from "../../subcomponents/cards/popUpContainer"
@@ -19,17 +18,16 @@ const Services = () => {
   const [cards, setCards] = useState(false)
   const [isForm, setIsForm] = useState(false)
   const [bookForm, setBookForm] = useState("")
-  const [cities, setCities] = useState("")
   const [providers, setProviders] = useState("")
   const [filteredSubServices, setFilteredSubServices] = useState("")
   const [serviceProviderCards, setServiceProviderCards] = useState("")
 
-  const fetchCities = async () => {
-    const apiData = await dataFetch('city')
-    if (apiData?.success) {
-      setCities(apiData?.data?.results)
-    } 
-  }
+  // const fetchCities = async () => {
+  //   const apiData = await dataFetch('city')
+  //   if (apiData?.success) {
+  //     setCities(apiData?.data?.results)
+  //   } 
+  // }
   
 
   const fetchProviders = async () => {
@@ -44,13 +42,12 @@ const Services = () => {
 
   useEffect(
     () => { 
-      fetchCities(); 
+      // fetchCities(); 
       fetchProviders();
     }, [])
 
   
   const onBookServiceClick = (data) => {
-    console.log(data, "Dn");
     setIsForm(true)
     setCards(false)
     setBookForm(<AddOrder data={data} setIsForm={setIsForm} setOpen={setOpen} />)
@@ -58,26 +55,27 @@ const Services = () => {
   }
 
   
-  const statesList = useSelector(state => state.stateAction.states)
   const onSubServiceClick = (servicesData) => {
-    const serviceId = servicesData.serviceId;
-    const subId = servicesData.subId;
+    let flag = false;
     
     if(providers?.length > 0){
       const filtedProvideres = providers?.filter((data, i) => {
         return(`${data.sub_service_type}` === `${servicesData.subId}`)
       })
-      
-      // const filteredState = statesList?.filter((data, i) => `${data.id}` === `${providers[i]?.state}`)
-      // const filteredCity = cities?.filter((data, i) => `${data.id}` === `${providers[i]?.city}`)
-
-      console.log(providers, "##############",  filtedProvideres);
-      const serviceProviderCards = filtedProvideres?.map((data, i) => {
-        const serviceData = {...servicesData, providerId: filtedProvideres?.[i]?.id, state: filtedProvideres?.[i].getStates?.[0].state, city: filtedProvideres?.[i].getCity?.[0]?.city}
-        return <ProviderCard data={data} onBookServiceClick={onBookServiceClick} servicesData={serviceData} key={data.id} />
+    
+      const serviceProviderCards = filtedProvideres?.map((data, i) => {    
+        if(data.service_status === "verified"){
+          flag = true;
+          const serviceData = {...servicesData, providerId: filtedProvideres?.[i]?.id, state: filtedProvideres?.[i].getStates?.[0].state, city: filtedProvideres?.[i].getCity?.[0]?.city}
+          return <div className="mb-8" key={data.id}><ProviderCard data={data} onBookServiceClick={onBookServiceClick} servicesData={serviceData} key={data.id} /></div>
+        }
       })
-      setServiceProviderCards(serviceProviderCards)
-      setCards(true)
+      if(flag === true){
+        setServiceProviderCards(serviceProviderCards)
+        setCards(true)
+      } else {
+        alert("sorry no providers are available for the service")  
+      }
 
     } else {
       alert("sorry no providers are available for the service")
@@ -103,11 +101,6 @@ const Services = () => {
     }
   }
 
-
-
-  
-  
-
   // to show the main services 
   const servicesData = useSelector(state => state.servicesActions.services)
   let serviceMapped = ""
@@ -126,13 +119,15 @@ const Services = () => {
         <Heading1 name="Services"/>
         {serviceMapped}
       </div>
-      <div>
+      {/* <div> */}
       {cards ? <PopUpContainer open={open} cards={cards} isForm={isForm} setCards={setCards} setIsForm={setIsForm} setOpen={setOpen}>{serviceProviderCards}</PopUpContainer> : <PopUpContainer cards={cards} setCards={setCards}  open={open} setOpen={setOpen}>{filteredSubServices}</PopUpContainer>}
       {isForm &&  <PopUpContainer open={open} cards={cards} isForm={isForm} setCards={setCards} setIsForm={setIsForm} setOpen={setOpen}>{bookForm}</PopUpContainer> }
-      </div>
+      {/* </div> */}
     </div>
   )
-}
+  } else {
+    return(<h3>NO DATA FOUND : (</h3>)
+  }
 }
 
 

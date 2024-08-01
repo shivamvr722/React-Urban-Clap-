@@ -50,6 +50,7 @@ const ListAllUsers = () => {
     }
   }
   
+
   useEffect(() => {
     const callApi = setTimeout(() => {
       users()
@@ -114,7 +115,6 @@ const ListAllUsers = () => {
       <NavigationBar />
       {loading && <h1 className="loading">Loading...</h1>}
       <div className="search">
-       
 
         <input type="text" id="search" placeholder="Search here..." onChange={(e) => setUserCategory(e.target.value)} value={userCategory} />
         <select onChange={(e)=> setUserCategory(e.target.value)} className="selectbox" name='user_type__iexact'>
@@ -123,8 +123,6 @@ const ListAllUsers = () => {
           <option value={"user"}>User</option>
           <option value={"SuperAdmin"}>Super Admin</option>
         </select>
-
-          {/* user_type__iexact */}
       </div>
       <table className="tableUList">
         <thead className="theadList">
@@ -133,11 +131,11 @@ const ListAllUsers = () => {
           </tr>
         </thead>
         <tbody className="tbodyList">
-          {allUsers}
+          {allUsers.length ? allUsers : <tr className="w-full"><td className="p-4 font-[900]" colSpan={9}>No Data Available : ( </td></tr>}
         </tbody>
       </table>
       <div>
-        <p>{userData?.previous && <span className="btnPagination" onClick={() => { setPage( page - 1 )}}>Prev</span>}<span className="currentPage">{page}</span>{userData?.next && <span className="btnPagination" onClick={() => { setPage( page + 1 )} }>Next</span>  }<span className="currentPage">({userData?.results?.length} / {userData.count})</span></p>
+        <p>{userData?.previous && <><span className="btnPagination" onClick={() => { setPage( 1 )}}>First</span><span className="btnPagination" onClick={() => { setPage( page - 1 )}}>Prev</span></>}<span className="currentPage">{page}</span>{userData?.next && <><span className="btnPagination" onClick={() => { setPage( page + 1 )} }>Next</span><span className="btnPagination" onClick={() => { setPage( Math.ceil(userData.count/10) )}}>Last</span></> }<span className="currentPage">({userData?.results?.length} / {userData.count})</span></p>
       </div>
       </>
     )

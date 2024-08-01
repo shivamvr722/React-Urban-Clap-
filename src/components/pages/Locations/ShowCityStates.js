@@ -7,6 +7,9 @@ import { addState } from "../../../features/stateSlice"
 const ShowStates = () => {
   const dispatch = useDispatch()
   const states = useSelector(state => state.stateAction.states)
+  const currentUser = useSelector((state) => state.userProfileActions.user)
+  const uType = currentUser.user_type.toLowerCase()
+
   const handleActivation = async (id, state, status) => {
     const URL = `http://127.0.0.1:8000/urban-company/state/${id}/`
     try{
@@ -20,7 +23,7 @@ const ShowStates = () => {
   }
 
   const stateMap = states?.map((obj, i) =>{
-    return <tr key={obj.id}><td>{obj.state}</td><td>{obj.state_status}</td><td><span className="btnspan" onClick={() => handleActivation(obj.id, obj.state, "active")}>Enable</span></td><td><span className="btnspan" onClick={() => handleActivation(obj.id, obj.state, "inactive")}>Disable</span></td></tr>
+    return <tr key={obj.id}><td>{obj.state}</td><td style={obj.state_status === "active" ? {color:"green"} : {color:"red"}}>{obj.state_status}</td>{uType === "superadmin" && <td><span className="btnspan" onClick={() => handleActivation(obj.id, obj.state, obj.state_status === "active" ? "inactive" : "active")}>{obj.state_status === "active" ? "Disable" :  "Enable"}</span></td>}</tr>
   })
 
   return(
@@ -32,7 +35,7 @@ const ShowStates = () => {
             <tr>
               <th>State Name</th>
               <th>Status</th>
-              <th colSpan={2}>Active/InActive</th>
+              {uType === "superadmin" && <th colSpan={2}>Active/InActive</th>}
             </tr>
           </thead>
           <tbody>

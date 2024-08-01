@@ -54,6 +54,9 @@ const AddProviderServices = () => {
     const response = await postData("services", formData);
     console.log(response.data)
     console.log(formData, "Thgis is the values");
+    if(response?.data?.id){
+      action.resetForm()
+    }
     // alert("data added successfully!")
     
   }
@@ -131,6 +134,7 @@ const AddProviderServices = () => {
     <div className="addservicecontainer">
     <Heading1 name={"Service Povider"} />
     <Formik 
+      enableReinitialize
       initialValues={{
         service_type: "",
         sub_service_type: "",

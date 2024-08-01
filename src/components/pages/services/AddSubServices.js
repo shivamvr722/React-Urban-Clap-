@@ -40,6 +40,7 @@ const AddSubService = () => {
     if(response?.data){
       dispatch(addSubService([...servicesOld, response.data]))
       alert("data added successfully!")
+      action.resetForm()
     } else if (response?.error) {
       console.log(response?.error)
       alert("failed")

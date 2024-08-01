@@ -36,13 +36,17 @@ const NavigationBar = () => {
     navItems.push({ id:7, text: "Services", show:"/servicespage" })
     navItems.push({ id:9, text: "Location", show:"/locations" })
     navItems.push({ id:10, text: "Bookings", show:"/booking" })
+    navItems.push({ id:12, text: "Offers", show:"/offernotification"})
     navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
   } else if(currentUser.user_type.toLowerCase() === "serviceprovider") {
     navItems.push({ id:7, text: "Services", show:"/addservice" })
     navItems.push({ id:10, text: "Bookings", show:"/booking" })
     navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
   } else {
-    navItems.push({ id:8, text: "Reviews/Rating", show:"/reviewsrating" })
+    navItems.push({ id:10, text: "MyBookings", show:"/booking" })
+    navItems.push({ id:9, text: "Location", show:"/locations" })
+    navItems.push({ id:12, text: "Offers", show:"/offernotification"})
+    navItems.push({ id:8, text: "Reviews&Ratings", show:"/reviewsrating" })
   }
   // for the login and logout logic
   if(!accessToken){

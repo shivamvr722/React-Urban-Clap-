@@ -21,7 +21,8 @@ import Booking from './components/pages/Booking/Booking';
 import LocationPage from './components/pages/Locations/LocationPage';
 import { addUser } from './features/usersSlice';
 import useFetchData from './Networks/useFetchData';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import PushedNotification from './components/pages/notification/PushedNotification';
 import NotFound from './components/subcomponents/NotFound';
 import ProvidersList from './components/pages/ServiceProvider/ProvidersList';
 import AddProviderServices from './components/pages/ServiceProvider/AddServiceProvider';
@@ -47,30 +48,57 @@ function App() {
   }
 
   useEffect(()=>{fetchProfile()}, []) 
-
+  const currentUser = useSelector((state) => state.userProfileActions.user)
   
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           {!localStorage.getItem("access") ? <Route path="/" element={<SingIn />} /> : <Route path="/" element={<Home link={link} />} />}
+          {
+            currentUser.user_type.toLowerCase() === "superadmin" 
+            && 
+            <>
+              <Route path="/allusers" element={<ListAllUsers />} />
+              <Route path="/providers" element={<ProvidersList />} />
+              <Route path="/servicespage" element={<ServicePage />} />
+            </>          
+          }
+          {
+            (currentUser.user_type.toLowerCase() === "superadmin" ||  currentUser.user_type.toLowerCase() === "serviceprovider")  
+            && 
+            <>
+              <Route path="/addservice" element={<AddServicesPage />} />
+            </> 
+          }
+          
+          {
+            (currentUser.user_type.toLowerCase() === "superadmin" ||  currentUser.user_type.toLowerCase() === "serviceprovider" || currentUser.user_type.toLowerCase() === "user")
+            &&
+            <>
+              <Route path='/booking' element={<Booking />} />
+              <Route path='/locations' element={<LocationPage />} />
+              <Route path="/logout" element={<><Logout /></>} />
+              <Route path="/reviewsrating" element={<RatingsReviewPage />} />
+              <Route path="/authredirect" element={<><UnAuthToken /></>} />
+              <Route path="/profile" element={<><UserprofileShow /></>} />
+              <Route path="/offernotification" element={<PushedNotification />} />
+            </>
+          }
+          
+          {/* no auth urls */}
           <Route path="/signup" element={<SingUp />} />
           <Route path="/forget" element={<ForgetPassword />} />
           <Route path="/setpassword" element={<ConfirmpPassword />} />
-          <Route path="/profile" element={<><UserprofileShow /></>} />
-          <Route path="/logout" element={<><Logout /></>} />
-          <Route path="/authredirect" element={<><UnAuthToken /></>} />
-          <Route path="/allusers" element={<ListAllUsers />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/subservices" element={<SubServices />} />
-          <Route path="/addservices" element={<AddService />} />
-          <Route path="/servicespage" element={<ServicePage />} />
-          <Route path="/reviewsrating" element={<RatingsReviewPage />} />
-          <Route path="/providers" element={<ProvidersList />} />
-          <Route path="/addservice" element={<AddServicesPage />} />
-          <Route path='/booking' element={<Booking />} />
-          <Route path='/locations' element={<LocationPage />} />
           <Route path='*' element={<NotFound />} />
+          
+          {/* <Route path="/services" element={<Services />} /> */}
+          {/* <Route path="/subservices" element={<SubServices />} /> */}
+          {/* <Route path="/addservices" element={<AddService />} /> */}
+          
+          
+          
+          
         </Routes>
       </BrowserRouter>
     </div>

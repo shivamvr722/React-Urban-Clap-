@@ -3,13 +3,15 @@ import Heading1 from "../../subcomponents/HeadingCoponets/Heading1"
 import "./location.css"
 import useFetchData from "../../../Networks/useFetchData"
 import axios from "axios"
+import { useSelector } from "react-redux"
 
 
 
 const ShowCities = () => {
   const { isLoading, dataFetch } = useFetchData();
   const [cities, setCities] = useState("")
-
+  const currentUser = useSelector((state) => state.userProfileActions.user)
+  const uType = currentUser.user_type.toLowerCase()
 
   const handleActivation = async (id, status) => {
     const URL = `http://127.0.0.1:8000/urban-company/city/${id}/`
@@ -38,7 +40,7 @@ const ShowCities = () => {
   
   if(cities?.length > 0) {
     const citiesMap = cities?.map((obj, i) =>{
-      return <tr key={obj.id}><td>{obj.city}</td><td>{obj.city_status}</td><td><span className="btnspan" onClick={() => handleActivation(obj.id, "active")}>Enable</span></td><td><span className="btnspan" onClick={() => handleActivation(obj.id, "inactive")}>Disable</span></td></tr>
+      return <tr key={obj.id}><td>{obj.city}</td><td style={obj.city_status === "active" ? {color:"green"} : {color:"red"} }>{obj.city_status}</td>{uType === "superadmin" && <td><span className="btnspan" onClick={() => handleActivation(obj.id, obj.city_status === "active" ? "inactive" : "active")}>{obj.city_status === "active" ? "Disable" :  "Enable"}</span></td>}</tr>
     })
   
     return(
@@ -49,7 +51,11 @@ const ShowCities = () => {
             <tr>
               <th>Cities Name</th>
               <th>Status</th>
-              <th colSpan={2}>Active/InActive</th>
+              {
+                uType === "superadmin" 
+                &&
+                <th colSpan={2}>Active/InActive</th>
+              }
             </tr>
           </thead>
           <tbody>

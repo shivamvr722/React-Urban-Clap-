@@ -35,7 +35,7 @@ export default function PopUpContainer(props) {
                   <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
                     Services
                   </DialogTitle>
-                  <div className="mt-2">
+                  <div className="h-[27rem] overflow-y-auto mt-2">
                     {/* <p className="text-sm text-gray-500"> */}
                       {props?.children}
                     {/* </p> */}

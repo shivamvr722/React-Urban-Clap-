@@ -16,14 +16,13 @@ const ServicePage = () => {
     <div>
       <NavigationBar />
       <div className="addServiceContainer">
+      </div>
         <AddService />
         <AddSubService />
-      </div>
         <AddProviderServices />
+        <ShowSubServices />
       <div className="showServicesContainer">
         <Services />
-        <ShowSubServices />
-        
       </div>
     </div>
   )

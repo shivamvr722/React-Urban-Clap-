@@ -3,34 +3,32 @@ import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import Footer from "../../subcomponents/footers/footer"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { addUser } from "../../../features/usersSlice"
-import { useNavigate } from "react-router-dom"
 import Services from "../services/Services"
 import useFetchData from "../../../Networks/useFetchData"
 import DSCards from "../../subcomponents/cards/DSCards"
 import { addState } from "../../../features/stateSlice"
 import { addService } from "../../../features/services"
 import { addSubService } from "../../../features/subServices"
+import TotalUserPieChart from "../../subcomponents/charts/PieChar"
 
 
 
 
 const Home = ({ link }) => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const { isLoading, dataFetch } = useFetchData();
-  const [cities, setCities] = useState("")
   const [usersCount, setUsersCount] = useState(0)
   const [providersCount, setProvidersCount] = useState(0);
   const [bookingsCount, setBookingsCount] = useState(0);
-  const [servicesCount, setServicesCount] = useState(0)
-  const [pendingBookCount, setPendingBookCount] = useState(0)
-  const [subServiceCount, setSubServiceCount] = useState(0)
-  
+  const [servicesCount, setServicesCount] = useState(0);
+  const [pendingBookCount, setPendingBookCount] = useState(0);
+  const [ordersCounts, setOrderCounts] = useState({});
+  const [subServiceCount, setSubServiceCount] = useState(0);
+  const [search, setSearch] = useState("")
 
   const currentUser = useSelector((state) => state.userProfileActions.user)
 
-  
+  // api data fetching functions
   const fetchUsersCount = async () => {
     if(currentUser.user_type.toLowerCase() === "superadmin"){
       const apiData = await dataFetch('userprofiles')
@@ -45,21 +43,19 @@ const Home = ({ link }) => {
   }
   
   const fetchBookings = async () => {
-    if(currentUser.user_type.toLowerCase() === "superadmin" || currentUser.user_type.toLowerCase() === "serviceprovider"){
-      const apiData = await dataFetch('bookings')
-      if (apiData?.success) {
-        let bcount = 0
-        if(apiData?.l)
-        console.log(apiData);
-        apiData?.data?.forEach((obj, i) => {
-          if(obj.service_status.toLowerCase() === "pending"){
-            bcount++;
-          }
-        })
-        setPendingBookCount(bcount)
-        setBookingsCount(apiData?.data?.length)
-      }
-    }
+    // if(currentUser.user_type.toLowerCase() === "superadmin" || currentUser.user_type.toLowerCase() === "serviceprovider"){
+      const apiData = await dataFetch('bookings');
+      const apiDataSPending = await dataFetch('bookings/?service_status__iexact=pending');
+      const apiDataSAccepted = await dataFetch('bookings/?service_status__iexact=accepted');
+      const apiDataSComplted = await dataFetch('bookings/?service_status__iexact=completed');
+      const apiDataSCancelled = await dataFetch('bookings/?service_status__iexact=cancelled');
+      const apiDataSRejected = await dataFetch('bookings/?service_status__iexact=rejected');
+      const apiDataSProgress = await dataFetch('bookings/?service_status__iexact=inprogress');
+      const orderCountsData = {accepted: apiDataSAccepted.data.count, pending: apiDataSPending.data.count, completed: apiDataSComplted.data.count, cancelled: apiDataSCancelled.data.count, rejected: apiDataSRejected.data.count,  inprogress: apiDataSProgress.data.count }
+      setOrderCounts(orderCountsData)
+      setBookingsCount(apiData.data.count)
+      setPendingBookCount(apiDataSPending.data.count)
+    // }
   }
 
   const fetchStates = async () => {
@@ -69,12 +65,16 @@ const Home = ({ link }) => {
     }
   }
 
-
   const fetchServices = async () => {
-    const apiData = await dataFetch("service")
+    const URL = `service/?service_type__icontains=${search}`
+    const apiData = await dataFetch(URL)
     if (apiData?.success) {
       setServicesCount(apiData?.data?.length)
-      dispatch(addService(apiData?.data))
+      if(!apiData?.data?.length){
+        dispatch(addService(false))  
+      } else {
+        dispatch(addService(apiData?.data))
+      }
     } else if (!apiData?.success){
       console.log(apiData.error);
     }
@@ -90,56 +90,38 @@ const Home = ({ link }) => {
     }
   }
 
-  const fetchCities = async () => {
-    const apiData = await dataFetch('city')
-    if (apiData?.success) {
-      setCities(apiData?.data)
-    }
-  }
- 
+  // fetching function called
   useEffect(
-    () => { fetchUsersCount(); fetchStates(); fetchServices(); fetchSubServices(); fetchCities(); fetchBookings() } , 
-  [])
-  // fetchProfile();
+    () => { 
+      fetchUsersCount();
+      fetchStates();
+      fetchSubServices();
+      fetchBookings();
+    }, 
+    [currentUser]);
 
-  const userData = useSelector((state) => state.userProfileActions.user); // can send it to navbar letter to make diff betwin roles
+  // for seach query
+  useEffect(
+    () => {fetchServices()},
+  [search]);
 
+  
   return (
     <>
       <NavigationBar />
       <div className="maincontainer">
-        <DSCards usersCount={usersCount} providersCount={providersCount} bookingsCount={bookingsCount} servicesCount={servicesCount} pendingBookCount={pendingBookCount} subServiceCount={subServiceCount}/>
+        <p className="text-[28px] font-[900] text-left ml-5 mt-5">Welcome, {currentUser.first_name} {currentUser.last_name}</p>
+        <DSCards usersCount={usersCount} providersCount={providersCount} bookingsCount={bookingsCount} servicesCount={servicesCount} pendingBookCount={pendingBookCount} dataCounts = {ordersCounts} subServiceCount={subServiceCount}/>
+        {(currentUser.user_type === "superadmin" || currentUser.user_type === "serviceprovider") && <TotalUserPieChart dataCounts = {ordersCounts} />}
+        <h2 className="text-[28px] font-[900] mt-9">Book A Service</h2>
+        <input type="text" id="search" placeholder="Search here..." onChange={(e) => setSearch(e.target.value)} value={search} />
         <Services />
+        <Footer />
       </div>
-      <Footer />
+      
     </>
   )
 }
 
 export default Home
 
-// <div className="serviceCat">
-//               <Services />
-//             </div>
-//             <div className="image1">
-//               <img src={servicesImage} width={900} height={900} />
-//             </div>
-
-// <div className="maincontainer">
-//         <div className="servicesContainer1">
-//         <div className="max-w-sm rounded overflow-hidden shadow-lg">
-//           <img className="w-full" src={servicesImage} alt="Sunset in the mountains" />
-//           <div className="px-6 py-4">
-//             <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
-//             <p className="text-gray-700 text-base">
-//               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-//             </p>
-//           </div>
-//           <div className="px-6 pt-4 pb-2">
-//             <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-//             <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-//             <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-//           </div>
-//         </div>
-//         </div>
-//       </div>

@@ -40,6 +40,7 @@ const AddService = () => {
     if(response.data){
       dispatch(addService([...servicesData, response?.data]))
       alert("data added successfully!")
+      action.resetForm()
     } else if (response?.error) {
       console.log(response.error);
       alert("failed")

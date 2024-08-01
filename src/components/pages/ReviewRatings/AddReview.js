@@ -7,23 +7,9 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
 const AddReview = () => {
-  const [errorMessage, setErrorMessage] = useState("")
-  const navigate = useNavigate()
 
   function handleSubmit(values, actions){
-    const URL = "http://127.0.0.1:8000/urban-company/review/"
-    
-    const login = async () => {
-      try{
-        setErrorMessage("")
-        const response =  await axios.post(URL, values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}})
-        console.log(response.data)
-        navigate("/reviews")
-      } catch (error) {
-        setErrorMessage(error.response.data)
-      }
-    }
-    login()
+    const URL = "review"
   }
 
   const mappedFileds = singInformFeed.map((obj, i)=>{

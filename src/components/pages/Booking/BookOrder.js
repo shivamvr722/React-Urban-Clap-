@@ -13,8 +13,7 @@ const bookingSchema = Yup.object().shape({
   .required("address is required"),
 })
 
-const AddOrder = ({data, setIsForm, setOpen}) => { 
-  console.log(data, "$$$$$$$$$$$$$$$$$$$$");
+const AddOrder = ({data, setIsForm, setOpen}) => {
   const navigate = useNavigate()
   const { isLoading, postData } = usePostData()
 
