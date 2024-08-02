@@ -27,6 +27,9 @@ const addServiceSchema = Yup.object().shape({
 
 
 const AddProviderServices = () => {
+  const currentUser = useSelector((state) => state.userProfileActions.user)
+  const cUser = currentUser.user_type;
+
   const { dataFetch } = useFetchData();
   // const {setFieldValue} = useFormikContext();
   const [serviceDp, setServiceDp] = useState("")
@@ -124,6 +127,10 @@ const AddProviderServices = () => {
 
 
   const serviceSubForm = providerFeed?.map((obj, i) => {
+    if(cUser === "serviceprovider" && obj.id === "user"){
+      obj = {...obj, hidden : true, value: currentUser.id}
+      return (<InputField obj={obj} key={obj.id} />)
+    }
     return (
       <InputField obj={obj} key={obj.id} />
     )
@@ -174,12 +181,14 @@ const AddProviderServices = () => {
       
       {serviceSubForm}
       
-      <div className="fieldcontainer">
-        <label htmlFor="service_image">Service Image</label>
+      <div className="lableinput">
+      {/* <div className="fieldcontainer"> */}
+        <label htmlFor="service_image">Service&nbsp;Image</label>
         <input type="file" name="service_image" id="service_image" accept="image/png, image/jpeg, image/jpg" onChange={ e => setFieldValue("service_image", e.target.files[0])} />
+      {/* </div> */}
       </div>
-      <div className="fieldcontainer">
-        <label htmlFor="document_file">Document Image</label>
+      <div className="lableinput">
+        <label htmlFor="document_file">Document&nbsp;Image</label>
         <input type="file" name="document_file" id="document_file" accept="image/png, image/jpeg, image/jpg" onChange={ e => setFieldValue("document_file", e.target.files[0])} />
       </div>
       <div>

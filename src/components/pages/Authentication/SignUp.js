@@ -69,13 +69,14 @@ const SingUp = () => {
       <Heading1 name={"Urban Clap"} />
       <Heading1 name={"Sing Up"}  /> 
       {mappedFileds}
+      <p onMouseDown={()=>{setIsPassword(!isPassword)}}><AiOutlineEye className="eyes"/></p>
       <label htmlFor="user_type" style={{color:"white"}}>Register As: </label>
       <Field as="select" name="user_type" id="user_type" className="selectbox">
         <option>register as</option>
         <option value={'User'}>User</option>
         <option value={'ServiceProvider'}>Service Provider</option>
       </Field>
-      <p onMouseDown={()=>{setIsPassword(!isPassword)}}><AiOutlineEye className="eyes"/></p>
+      <br />
       <Button name={"Sing Up"} type={"submit"} />
       <Button name={"Sing In"} type={"button"} handleAction={()=>{navigate("/")}} />
       <ShowError errorMessage={errorMessage} setErrorMessage={setErrorMessage} />

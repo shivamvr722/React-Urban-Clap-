@@ -4,6 +4,8 @@ import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import Button from "../../subcomponents/FormComponets/Button"
 import axios from "axios"
 import { useSelector } from "react-redux"
+import { RiArrowDownWideFill } from "react-icons/ri";
+import { RiArrowUpWideFill } from "react-icons/ri";
 
 const Booking = () => {
   const {isLoading, dataFetch}  = useFetchData()
@@ -11,6 +13,7 @@ const Booking = () => {
   const [filteredBookings, setfilteredBookings] = useState("")
   const [bookPagination, setBookPagination] = useState("")
   const [searchBookings, setSearchBookings] = useState("")
+  const [orderField, setOrderField] = useState("")
   const [page, setPage] = useState(1)
   const currentUser = useSelector((state) => state.userProfileActions.user)
   const utype = currentUser.user_type
@@ -32,7 +35,7 @@ const Booking = () => {
     if(filteredBookings){
       URL = `bookings/?p=${page}&service_status__iexact=${filteredBookings}`; //&service_status__iexact=${null}
     } else {
-      URL = `bookings/?p=${page}&service_address__icontains=${searchBookings}`;
+      URL = `bookings/?p=${page}&service_address__icontains=${searchBookings}&ordering=${orderField}`;
     }
     const apiData = await dataFetch(URL)
     if (apiData?.success) {
@@ -46,7 +49,7 @@ const Booking = () => {
     () => { 
       fetchBookings();
     }, 
-  [filteredBookings, page, searchBookings])
+  [filteredBookings, page, orderField, searchBookings])
 
   let bookedMap = <tr></tr>
   if(bookings?.length > 0){
@@ -79,19 +82,23 @@ const Booking = () => {
                 {
                   obj?.service_status?.trim().toLowerCase() === "accepted" && utype !== "user"
                   ? 
-                    <Button 
-                      name={"In Progress"} 
-                      type={"button"} 
-                      handleAction={() => orderHandler(obj?.id, "inprogress")} 
-                    />
+                    <td>
+                      <Button 
+                        name={"In Progress"} 
+                        type={"button"} 
+                        handleAction={() => orderHandler(obj?.id, "inprogress")} 
+                      />
+                    </td>
                   : 
                     obj?.service_status?.trim().toLowerCase() === "inprogress"
                     ?
+                    <td>
                       <Button 
                         name={utype === "user" ? "Cancel Booking" : "Complete" } 
                         type={"button"} 
                         handleAction={() => orderHandler(obj?.id, utype === "user" ? "cancelled" : "completed" )} 
                       />
+                    </td>
                     :
                       <td colSpan={2}>{"Answered"}</td>
                 }
@@ -119,12 +126,12 @@ const Booking = () => {
       <table>
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Service Name</th>
-            <th>User Name</th>
-            <th>TimeSlot</th>
-            <th>Addess</th>
-            <th>Stutus</th>
+          <th onClick={() => setOrderField(orderField === "-id" ? "id" : "-id")} className="text-center"><span className="flex xflex"> Id {orderField === "-id" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-service__service_type__service_type" ? "service__service_type__service_type" : "-service__service_type__service_type")} className="text-center"><span className="flex xflex"> Service Name {orderField === "-service__service_type__service_type" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "user__username" ? "-user__username" : "user__username")} className="text-center"><span className="flex xflex"> User Name {orderField === "-user__username" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-slotdatetime" ? "slotdatetime" : "-slotdatetime")} className="text-center"><span className="flex xflex"> TimeSlot {orderField === "-slotdatetime" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-service_address" ? "service_address" : "-service_address")} className="text-center"><span className="flex xflex"> Addess {orderField === "-service_address" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-service_status" ? "service_status" : "-service_status")} className="text-center"><span className="flex xflex"> Stutus {orderField === "-service_status" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
             {utype === "user" ? <th>Booking Requested</th> : <th>Booking Requests</th> }
           </tr>
         </thead>

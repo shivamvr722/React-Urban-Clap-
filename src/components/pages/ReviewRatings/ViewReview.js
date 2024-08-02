@@ -45,7 +45,7 @@ const ViewReviews = () => {
   console.log(reviews)
   return(
     <div className="reviews">
-      <Heading1 name={"Reviews"} />
+      <h2 className="rr">Reviews</h2>
       <div className="bookingsDiv">
         <table>
           <thead>

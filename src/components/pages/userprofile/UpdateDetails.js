@@ -77,7 +77,6 @@ const updateProfileValidationSchema = Yup.object().shape({
 const UpdateDetails = ({update, setUpdate, data, aState}) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  let currentUser = useSelector((state)=> state.userProfileActions.user);
   let url = null
   
   const handleSubmit = async (values, action) => {

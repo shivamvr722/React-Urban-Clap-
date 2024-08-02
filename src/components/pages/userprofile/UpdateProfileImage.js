@@ -14,7 +14,7 @@ const UploadProfileImage = () => {
   return (
     <Formik
       initialValues={{ profile_path: "" }}
-      onSubmit={async  (values) => {
+      onSubmit={async (values) => {
         try{
           const formData = new FormData()
           formData.append('profile_path', values.profile_path)

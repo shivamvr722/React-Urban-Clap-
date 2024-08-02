@@ -33,7 +33,6 @@ const Services = () => {
   const fetchProviders = async () => {
     const apiData = await dataFetch("services")
     if (apiData?.success) {
-      console.log(apiData.data?.results, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
       setProviders(apiData?.data?.results)
     } else if (!apiData?.success){
       console.log(apiData.error);

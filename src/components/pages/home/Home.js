@@ -24,18 +24,19 @@ const Home = ({ link }) => {
   const [pendingBookCount, setPendingBookCount] = useState(0);
   const [ordersCounts, setOrderCounts] = useState({});
   const [subServiceCount, setSubServiceCount] = useState(0);
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
 
   const currentUser = useSelector((state) => state.userProfileActions.user)
 
   // api data fetching functions
   const fetchUsersCount = async () => {
-    if(currentUser.user_type.toLowerCase() === "superadmin"){
+    if(currentUser.user_type.toLowerCase() === "superadmin" || currentUser.user_type.toLowerCase() === "serviceprovider"){
       const apiData = await dataFetch('userprofiles')
       const apiData2S = await dataFetch('userprofiles/?p=1&user_type__iexact=ServiceProvider')
       if (apiData2S?.success) {
         setProvidersCount(apiData2S?.data?.count)
       } 
+      
       if (apiData?.success) {
         setUsersCount(apiData?.data?.count)
       }
@@ -45,6 +46,7 @@ const Home = ({ link }) => {
   const fetchBookings = async () => {
     // if(currentUser.user_type.toLowerCase() === "superadmin" || currentUser.user_type.toLowerCase() === "serviceprovider"){
       const apiData = await dataFetch('bookings');
+      
       const apiDataSPending = await dataFetch('bookings/?service_status__iexact=pending');
       const apiDataSAccepted = await dataFetch('bookings/?service_status__iexact=accepted');
       const apiDataSComplted = await dataFetch('bookings/?service_status__iexact=completed');

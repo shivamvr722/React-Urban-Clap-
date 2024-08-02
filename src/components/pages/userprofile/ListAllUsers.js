@@ -7,7 +7,8 @@ import { Link, useNavigate } from "react-router-dom"
 import profileDefault from "../../../assets/userprofileDefault.png"
 import useFetchData from "../../../Networks/useFetchData"
 import { debounce } from "lodash"
-
+import { RiArrowDownWideFill } from "react-icons/ri";
+import { RiArrowUpWideFill } from "react-icons/ri";
 
 // import { addUserList } from "../../../features/listUserSlice"
 
@@ -17,11 +18,13 @@ const ListAllUsers = () => {
   const [intialUserData, setInitialUserData] = useState("")
   const [userData, setUserData] = useState("")
   const [filterUser, setFilterUser] = useState("")
+  const [orderField, setOrderField] = useState("")
   const [userCategory, setUserCategory] = useState("")
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const navigate = useNavigate("")
   const dispatch = useDispatch()
+  
 
   // for profile image
   let profileImage =  `http://localhost:8000:null`;
@@ -38,7 +41,7 @@ const ListAllUsers = () => {
     if(userCategory === "ServiceProvider" || userCategory === "user" || userCategory === "SuperAdmin"){
       URL = `userprofiles/?p=${page}&user_type__iexact=${userCategory}`;
     } else {
-      URL = `userprofiles/?p=${page}&first_name__icontains=${userCategory}`;
+      URL = `userprofiles/?p=${page}&first_name__icontains=${userCategory}&ordering=${orderField}`;
     }
     const apiData = await dataFetch(URL);
     if (apiData?.success) {
@@ -52,12 +55,12 @@ const ListAllUsers = () => {
   
 
   useEffect(() => {
-    const callApi = setTimeout(() => {
+    // const callApi = setTimeout(() => {
       users()
-    }, 500)
-    return () => clearTimeout(callApi)
+    // }, 500)
+    // return () => clearTimeout(callApi)
 
-  }, [page, userCategory, setPage])
+  }, [page, filterUser, orderField, userCategory, setPage])
     
   
   // for filter the search
@@ -104,10 +107,12 @@ const ListAllUsers = () => {
       )
     })
 
-    const theading = ["Index", "Profile Image", "First Name", "Last Name", "Email", "Contact", "User Type", "User id", "Update/View"]
-    const heading = theading.map((head, i)=>{
-      return <th key={head}>{head}</th>
-    })
+    // const theading = ["Index", "Profile Image", "First Name", "Last Name", "Email", "Contact", "User Type", "User id", "Update/View"]
+    // const theadingx = ["First Name", "Last Name", "Email", "Contact", "User Type"]
+    // const heading = theading.map((head, i)=>{
+    //   return <th onClick={() => setOrderField(orderField === "-message" ? "message" : "-message")} className="text-center"><span className="flex xflex"> Message {orderField === "-message" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+    //   //  <th key={head}>{head}</th>
+    // })
 
 
     return(
@@ -127,7 +132,17 @@ const ListAllUsers = () => {
       <table className="tableUList">
         <thead className="theadList">
           <tr>
-          {heading}
+          {/* ["Index", "Profile Image", "First Name", "Last Name", "Email", "Contact", "User Type", "User id", "Update/View"] */}
+            <th> Index </th>
+            <th> Profile Image </th>
+            <th onClick={() => setOrderField(orderField === "-first_name" ? "first_name" : "-first_name")} className="text-center"><span className="flex xflex"> First Name {orderField === "-first_name" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-last_name" ? "last_name" : "-last_name")} className="text-center"><span className="flex xflex"> Last Name {orderField === "-last_name" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-email" ? "email" : "-email")} className="text-center"><span className="flex xflex"> Email {orderField === "-email" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-contact_number" ? "contact_number" : "-contact_number")} className="text-center"><span className="flex xflex"> Contact {orderField === "-contact_number" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-user_type" ? "user_type" : "-user_type")} className="text-center"><span className="flex xflex"> User Type {orderField === "-user_type" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th onClick={() => setOrderField(orderField === "-id" ? "id" : "-id")} className="text-center"><span className="flex xflex"> User id {orderField === "-id" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            <th>Update/View</th>
+          {/* {heading} */}
           </tr>
         </thead>
         <tbody className="tbodyList">

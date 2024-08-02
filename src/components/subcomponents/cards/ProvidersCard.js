@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import logo from "../../../assets/uclogo.png"
 const ProviderCard = ({data, servicesData, onBookServiceClick}) => {
-  const ImageURL = `http://localhost:8000/media/${data.service_image}`;
+  const ImageURL = `http://localhost:8000${data.service_image}`;
   if(!data.service_image){
     ImageURL = logo
   }
@@ -28,7 +28,7 @@ const ProviderCard = ({data, servicesData, onBookServiceClick}) => {
   return(
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <a href="#">
-        <img className="rounded-t-lg" src={ImageURL} alt="image" />
+        <img className="rounded-t-lg w-[300px] h-[300px]" src={ImageURL} alt="image" />
       </a>
       <div className="p-5">
           <a href="#">

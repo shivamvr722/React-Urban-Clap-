@@ -38,7 +38,7 @@ const ViewsRatings = () => {
 
   return(
     <div className="ratings">
-      <Heading1 name={"Ratings"} />
+      <h1 className="rr">Ratings</h1>
       <div className="bookingsDiv">
         <table>
           <thead>

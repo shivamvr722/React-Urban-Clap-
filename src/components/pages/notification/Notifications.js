@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
 import useFetchData from "../../../Networks/useFetchData";
+import "./notifications.css";
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar";
-import "./notifications.css"
 import { useSelector } from "react-redux";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { RiArrowUpWideFill } from "react-icons/ri";
+import { useEffect, useState } from "react";
 
 
-const PushedNotification  = () => {
+const Notification = () => {
   const { isLoading, dataFetch } = useFetchData();
   const [page, setPage] = useState(1);
   const [filterMessage, setFilterMessage] = useState("")
@@ -15,13 +15,14 @@ const PushedNotification  = () => {
   const [notifications, setNotifications] = useState("")
   const [notificationsPage, setNotificationsPage] = useState("")
   const currentUser = useSelector((state) => state.userProfileActions.user)
+  
 
   const fetchOffersAll = async () => {
     let URL = "";
     if(currentUser.user_type === "superadmin"){
-      URL = `offerstouser/?p=${page}&message__icontains=${filterMessage}&ordering=${orderField}`
+      URL = `notification/?p=${page}&message__icontains=${filterMessage}&ordering=${orderField}`
     } else {
-      URL = `offernotification/?p=${page}&message__icontains=${filterMessage}`
+      URL = `notification/?p=${page}&message__icontains=${filterMessage}`
     }
     const apiData = await dataFetch(URL)
     if (apiData?.success) {
@@ -64,10 +65,7 @@ const PushedNotification  = () => {
       </table>
       </div>
       <p>{notificationsPage?.previous && <><span className="btnPagination" onClick={() => { setPage( 1 )}}>First</span><span className="btnPagination" onClick={() => { setPage( page - 1 )}}>Prev</span></>}<span className="currentPage">{page}</span>{notificationsPage?.next && <><span className="btnPagination" onClick={() => { setPage( page + 1 )} }>Next</span><span className="btnPagination" onClick={() => { setPage( Math.ceil(notificationsPage.count / 10) )} }>Last</span></>}<span className="currentPage">({notificationsPage.records} / {notificationsPage.count})</span></p>
-    </div>
-    
-  )
+    </div>)
 }
 
-
-export default PushedNotification
+export default Notification

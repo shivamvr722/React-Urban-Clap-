@@ -27,6 +27,7 @@ import NotFound from './components/subcomponents/NotFound';
 import ProvidersList from './components/pages/ServiceProvider/ProvidersList';
 import AddProviderServices from './components/pages/ServiceProvider/AddServiceProvider';
 import AddServicesPage from './components/pages/ServiceProvider/AddServicesPage';
+import Notification from './components/pages/notification/Notifications';
 
 // import ViewReviews from './components/pages/ReviewRatings/Review';
 // import ViewsRatings from './components/pages/ReviewRatings/Ratings';
@@ -34,8 +35,6 @@ import AddServicesPage from './components/pages/ServiceProvider/AddServicesPage'
 
 function App() {
   const [link, setLink] = useState("")
-  const [user,  setUser] = useState()
-  const [orderCount, setOrderCount] = useState(0)
   const {isLoading, dataFetch} = useFetchData()
   const dispatch = useDispatch()
   
@@ -83,6 +82,7 @@ function App() {
               <Route path="/authredirect" element={<><UnAuthToken /></>} />
               <Route path="/profile" element={<><UserprofileShow /></>} />
               <Route path="/offernotification" element={<PushedNotification />} />
+              <Route path="/notification" element={<Notification />} />
             </>
           }
           
