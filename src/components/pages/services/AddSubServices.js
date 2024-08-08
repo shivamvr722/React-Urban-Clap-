@@ -21,7 +21,7 @@ const feed = [
 
 const addServiceSchema = Yup.object().shape({
   sub_service: Yup.string()
-  .required("service is required")
+  .required("sub service is required")
   .max(30, "name field should be less then 30 characteres"),
 })
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1"
 import "./reviews_ratings.css"
 import useFetchData from "../../../Networks/useFetchData";
+import TableHead from "../../subcomponents/HeadingCoponets/TableHead";
 
 
 
@@ -9,20 +10,11 @@ import useFetchData from "../../../Networks/useFetchData";
 const ViewReviews = () => {
   const { isLoading, dataFetch } = useFetchData();
   const [reviews, setReviews] = useState("")
-  
-  // const URL = "http://127.0.0.1:8000/urban-company/viewreview/"
+  const [orderField, setOrderField] = useState("")
 
-  // const getReviews = async () => {
-  //   try{
-  //     const response = await axios.get(URL, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}})
-  //     console.log(response.data);
-  //     setReviews(response.data)
-  //   } catch (error) {
-  //     console.log(error.data)
-  //   }
-  // }
   const fetchReviews = async () => {
-    const apiData = await dataFetch('viewreview')
+    const URL = `viewreview/?ordering=${orderField}`
+    const apiData = await dataFetch(URL)
     if (apiData?.success) {
       setReviews(apiData?.data)
     }
@@ -30,19 +22,22 @@ const ViewReviews = () => {
 
   useEffect(
     () => { fetchReviews() },
-  [])
+  [orderField])
 
+  const tname = ["booking__user__username", "booking__service__service_type__service_type", "review"]
+  const ttname = ["Username", "Services", "Review"]
+  const heads = tname.map((field, i) => {
+    return <TableHead  key={i} name={field} titleName={ttname[i]} orderField={orderField} setOrderField={setOrderField} />
+  })
 
   let reviewMapped = []
   if(reviews.length > 0){   
     reviewMapped = reviews?.map((obj, i)=>{
-      return <tr key={obj.id}><td>{obj.user}</td><td>{obj.services}</td><td>{obj.review}</td></tr> //<td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td>
+      return <tr key={obj.id}><td>{obj.user}</td><td>{obj.services}</td><td>{obj.review}</td></tr> //<td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td>  <td onClick={() => { console.log(obj.id)}} >Edit</td><td onClick={() => { console.log(obj.id)}}>Delete</td>
     })
   }
 
   
-
-  console.log(reviews)
   return(
     <div className="reviews">
       <h2 className="rr">Reviews</h2>
@@ -50,11 +45,7 @@ const ViewReviews = () => {
         <table>
           <thead>
             <tr>
-              <th>Username</th>
-              <th>Services</th>
-              <th>Review</th>
-              {/* <th>Edit</th>
-              <th>Update</th> */}
+              {heads}
             </tr>
           </thead>
           <tbody>

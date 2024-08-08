@@ -25,7 +25,7 @@ const providerFeed = [
     "title": "Charges",
     "hint": "100",
     "name": "service_charges",
-    "type": "number",
+    "type": "text",
   },
 ]
 

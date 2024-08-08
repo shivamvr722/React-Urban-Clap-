@@ -1,44 +1,33 @@
-// import Navbar from './components/subcomponents/navbar/Navbar';
+import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { addUser } from './features/usersSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import SingUp from './components/pages/Authentication/SignUp';
 import SingIn from './components/pages/Authentication/SingIn';
 import ForgetPassword from './components/pages/Authentication/ForgetPassword';
 import ConfirmpPassword from './components/pages/Authentication/ConfirmPassword';
 import ListAllUsers from './components/pages/userprofile/ListAllUsers';
 import Home from './components/pages/home/Home';
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
-import './App.css';
 import UserprofileShow from './components/pages/userprofile/Userprofile';
 import Logout from './components/pages/Authentication/Logout';
 import UnAuthToken from './components/pages/Authentication/UnAuthToken';
-import Services from './components/pages/services/Services';
-import SubServices from './components/pages/services/SubServices';
-import AddService from './components/pages/services/AddServices';
 import ServicePage from './components/pages/services/ServicePage';
 import RatingsReviewPage from './components/pages/ReviewRatings/RatingReviewPage';
-import ShowServiceProvider from './components/pages/ServiceProvider/ShowServiceProvder';
 import Booking from './components/pages/Booking/Booking';
 import LocationPage from './components/pages/Locations/LocationPage';
-import { addUser } from './features/usersSlice';
 import useFetchData from './Networks/useFetchData';
-import { useDispatch, useSelector } from 'react-redux';
 import PushedNotification from './components/pages/notification/PushedNotification';
 import NotFound from './components/subcomponents/NotFound';
 import ProvidersList from './components/pages/ServiceProvider/ProvidersList';
-import AddProviderServices from './components/pages/ServiceProvider/AddServiceProvider';
 import AddServicesPage from './components/pages/ServiceProvider/AddServicesPage';
 import Notification from './components/pages/notification/Notifications';
-
-// import ViewReviews from './components/pages/ReviewRatings/Review';
-// import ViewsRatings from './components/pages/ReviewRatings/Ratings';
-// require('dotenv').config()
 
 function App() {
   const [link, setLink] = useState("")
   const {isLoading, dataFetch} = useFetchData()
   const dispatch = useDispatch()
   
-
   const fetchProfile = async () => {
     const apiData = await dataFetch('userprofile')
     if (apiData?.success) {
@@ -87,20 +76,20 @@ function App() {
           }
           
           {/* no auth urls */}
+          {
+            !currentUser.id &&
+            <Route path="/signin" element={<SingIn />} />
+          }
           <Route path="/signup" element={<SingUp />} />
           <Route path="/forget" element={<ForgetPassword />} />
           <Route path="/setpassword" element={<ConfirmpPassword />} />
           <Route path='*' element={<NotFound />} />
           
-          {/* <Route path="/services" element={<Services />} /> */}
-          {/* <Route path="/subservices" element={<SubServices />} /> */}
-          {/* <Route path="/addservices" element={<AddService />} /> */}
-          
-          
-          
-          
         </Routes>
       </BrowserRouter>
+      <noscript>
+        <h1>!!TO RUN THIS WEBSITE PLEASE ENABLE THE JAVASCRIPT IN YOUR BROWSER!!</h1>
+      </noscript>
     </div>
   );
 }

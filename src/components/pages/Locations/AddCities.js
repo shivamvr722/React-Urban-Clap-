@@ -20,23 +20,22 @@ const feed = [
 ]
 
 const addServiceSchema = Yup.object().shape({
-  state: Yup.string()
-  .required("state is required")
+  city: Yup.string()
+  .required("city is required")
   .max(30, "name field should be less then 30 characteres"),
 })
 
 const AddCity = () => { 
   const navigate = useNavigate()
   const [state, setState] = useState("")
-  let url = null
+  const stateData = useSelector(state => state.stateAction.states)
 
+  
   const handleSubmit = async (values, action) => {
-    console.log(values);
-    url = `${process.env.REACT_APP_API_BASE_URL}city/`
+    const url = `${process.env.REACT_APP_API_BASE_URL}city/`
     try{
       const response = await axios.post(url, values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}});
       alert("city added successfully!")
-  
     } catch (error) {
       console.log("on error");
       console.log(error)
@@ -44,12 +43,11 @@ const AddCity = () => {
   }
 
 
-  const servicesData = useSelector(state => state.servicesActions.services)
-
-  let servicesMap = ""
-  if (servicesData.length > 0){
-    servicesMap = servicesData?.map((service, i) => {
-      return <option key={service.id} value={service.id}>{service.service_type}</option>
+  
+  let stateMap = ""
+  if (stateData?.length > 0){
+    stateMap = stateData?.map((obj, i) => {
+      return <option key={obj.id} value={obj.id}>{obj.state}</option>
     })  
   }
 
@@ -67,13 +65,18 @@ const AddCity = () => {
     <Formik 
       initialValues={{
         state_id:"",
-        state: "",
+        city: "",
       }}
       validationSchema={addServiceSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, handleSubmit, errors }) => (
       <Form>
+        <label htmlFor="state_id">State</label>
+        <Field as="select" id="state_id" name="state_id" className="selectbox">
+          <option>select state</option>
+          {stateMap}
+        </Field>
         {mappedInputs}
         <Button name={"Add"} type={"submit"} />
         <Button name={"Back"} type={"button"} handleAction={()=>{navigate("/")}} />

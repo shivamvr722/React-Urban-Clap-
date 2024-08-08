@@ -14,15 +14,15 @@ const sections = [
   },
   {
     title: "Support",
-    items: ["Pricing", "Documentation", "Guides", "API Status"],
+    items: ["Pricing", "Customer", "Care", "Products"],
   },
   {
     title: "Company",
-    items: ["About", "Blog", "Jobs", "Press", "Partners"],
+    items: ["About", "Insta", "Twitter", "Linkedin"],
   },
   {
-    title: "Legal",
-    items: ["Claims", "Privacy", "Terms", "Policies", "Conditions"],
+    title: "Partners",
+    items: ["Urban Tools", "Urban Transport", "Urban Services", "Other"],
   },
 ];
 

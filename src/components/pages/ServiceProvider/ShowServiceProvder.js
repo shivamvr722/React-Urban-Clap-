@@ -1,4 +1,3 @@
-import ProviderCard from "../../subcomponents/cards/ProvidersCard";
 import useFetchData from "../../../Networks/useFetchData";
 import { useEffect, useState } from "react";
 

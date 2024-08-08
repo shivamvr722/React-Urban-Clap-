@@ -2,14 +2,14 @@
     color: white;
 }
 .servicesCatContainer{
-    width: 450px;
-    margin: 0 auto;
+    width: 850px;
+    margin: 10px auto;
     text-align: center;
 }
 
 .servicesCatContainer table{
     margin: 0 auto;
-    width: 400px;
+    width: 500px;
 }
 
 .servicesCatContainer table tbody tr{

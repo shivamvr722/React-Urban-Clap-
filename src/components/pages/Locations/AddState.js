@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../../subcomponents/FormComponets/FormInput";
 import Button from "../../subcomponents/FormComponets/Button";
 import Heading1 from "../../subcomponents/HeadingCoponets/Heading1";
-import { addState } from "../../../features/stateSlice";
-import { useState } from "react";
 
 
 const feed = [
@@ -28,24 +26,19 @@ const addStateSchema = Yup.object().shape({
 
 const AddState = () => {
   const navigate = useNavigate()
-  const [state, setState] = useState("")
-  let url = null
-  const dispatch = useDispatch()
 
   const handleSubmit = async (values, action) => {
     console.log(values);
-    url = `${process.env.REACT_APP_API_BASE_URL}/state/`
+    const url = `${process.env.REACT_APP_API_BASE_URL}state/`
     try{
       const response = await axios.post(url, values, {headers: {Authorization: `Bearer ${localStorage.getItem("access")}`}});
       console.log(response.data);
       alert("service added successfully!", response.data)
-    
     } catch (error) {
       console.log("on error");
       console.log(error)
     }
   }
-
 
   const servicesData = useSelector(state => state.servicesActions.services)
 

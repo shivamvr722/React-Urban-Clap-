@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  services:{
+  services: {
     "id": "",
-    "service_type" :""
+    "service_type": ""
   }
 }
 

@@ -21,3 +21,17 @@
     margin: 0 auto;
     width: 180px;
 }
+
+.spnbtn{
+    background-color: black;
+    color: white;
+    padding: 5px;
+    margin: 5px;
+    font-weight: bold;
+    border-radius: 7px;
+    font-size: 20px;
+}
+
+.books:hover{
+    background-color: rgb(0, 21, 0);
+}

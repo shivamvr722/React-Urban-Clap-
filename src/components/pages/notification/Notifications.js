@@ -2,13 +2,15 @@ import useFetchData from "../../../Networks/useFetchData";
 import "./notifications.css";
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar";
 import { useSelector } from "react-redux";
-import { RiArrowDownWideFill } from "react-icons/ri";
-import { RiArrowUpWideFill } from "react-icons/ri";
 import { useEffect, useState } from "react";
+import usePatchData from "../../../Networks/usePatchData";
+import TableHead from "../../subcomponents/HeadingCoponets/TableHead";
 
 
 const Notification = () => {
   const { isLoading, dataFetch } = useFetchData();
+  const { isLoadingPatch, patchData } = usePatchData();
+  const [isReadFlag, setIsReadFlag] = useState(false);
   const [page, setPage] = useState(1);
   const [filterMessage, setFilterMessage] = useState("")
   const [orderField, setOrderField] = useState("")
@@ -17,12 +19,12 @@ const Notification = () => {
   const currentUser = useSelector((state) => state.userProfileActions.user)
   
 
-  const fetchOffersAll = async () => {
+  const fetchNotification = async (isRead=false) => {
     let URL = "";
     if(currentUser.user_type === "superadmin"){
-      URL = `notification/?p=${page}&message__icontains=${filterMessage}&ordering=${orderField}`
+      URL = `notification/?p=${page}&search=${filterMessage}&ordering=${orderField}&read=${isRead}`
     } else {
-      URL = `notification/?p=${page}&message__icontains=${filterMessage}`
+      URL = `notification/?p=${page}&search=${filterMessage}&ordering=${orderField}&read=${isRead}`
     }
     const apiData = await dataFetch(URL)
     if (apiData?.success) {
@@ -32,9 +34,21 @@ const Notification = () => {
     }
   }
 
-  useEffect(()=>{ fetchOffersAll() },
-  [page, filterMessage, orderField])
 
+  useEffect(()=>{ 
+    if(isReadFlag){
+      fetchNotification(true)
+    } else {
+      fetchNotification(false) 
+    }
+  },
+  [page, filterMessage, orderField])
+  
+  const tname = ["user__username", "message", "created_at"]
+  const ttname = ["User name", "Message", "Notification Time"]
+  const heads = tname.map((field, i) => {
+    return <TableHead key={i} name={field} titleName={ttname[i]} orderField={orderField} setOrderField={setOrderField} />
+  })
 
   let notificationMap = <tr></tr>
   if(notifications?.length > 0){
@@ -50,17 +64,16 @@ const Notification = () => {
       <input type="text" id="search" placeholder="Search here..." onChange={(e) => setFilterMessage(e.target.value)} value={filterMessage} />
       <div className="bookingsDiv">
         <h2 className="booking">Offers</h2>
+        <p><span className="spnbtn" onClick={() => {fetchNotification(false); setIsReadFlag(false)}}>New Notification</span><span  className="spnbtn" onClick={() => {fetchNotification(true); setIsReadFlag(true)}}>Notification History</span></p>
         <table>
           <thead>
             <tr>
               <th>Ref Id</th>
-              <th onClick={() => setOrderField(orderField === "-user__username" ? "user__username" : "-user__username")} className="text-center"><span className="flex xflex"> User name {orderField === "-user__username" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-              <th onClick={() => setOrderField(orderField === "-message" ? "message" : "-message")} className="text-center"><span className="flex xflex"> Message {orderField === "-message" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-              <th onClick={() => setOrderField(orderField === "-created_at" ? "created_at" : "-created_at")}><span className="flex xflex"> Notification Time {orderField === "-created_at" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+              {heads}
             </tr>
           </thead>
           <tbody>
-            {notificationMap.length ? notificationMap : <tr className="w-full"><td className="p-4 font-[900]" colSpan={14}>No Data Available : ( </td></tr>}
+            {notificationMap.length ? notificationMap : <tr className="w-full"><td className="p-4 font-[900]" colSpan={14}>No Notification Available : ( </td></tr>}
           </tbody>
       </table>
       </div>

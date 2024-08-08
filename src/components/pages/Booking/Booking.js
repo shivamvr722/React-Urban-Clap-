@@ -6,6 +6,7 @@ import axios from "axios"
 import { useSelector } from "react-redux"
 import { RiArrowDownWideFill } from "react-icons/ri";
 import { RiArrowUpWideFill } from "react-icons/ri";
+import TableHead from "../../subcomponents/HeadingCoponets/TableHead"
 
 const Booking = () => {
   const {isLoading, dataFetch}  = useFetchData()
@@ -15,8 +16,10 @@ const Booking = () => {
   const [searchBookings, setSearchBookings] = useState("")
   const [orderField, setOrderField] = useState("")
   const [page, setPage] = useState(1)
+  
   const currentUser = useSelector((state) => state.userProfileActions.user)
   const utype = currentUser.user_type
+
   const orderHandler = async (id, value) => {
     const URL = `http://127.0.0.1:8000/urban-company/bookings/${id}/`
     try{
@@ -31,12 +34,8 @@ const Booking = () => {
   }
 
   const fetchBookings = async () => {
-    let URL = ""
-    if(filteredBookings){
-      URL = `bookings/?p=${page}&service_status__iexact=${filteredBookings}`; //&service_status__iexact=${null}
-    } else {
-      URL = `bookings/?p=${page}&service_address__icontains=${searchBookings}&ordering=${orderField}`;
-    }
+    const URL = `bookings/?p=${page}&search=${searchBookings}&ordering=${orderField}&service_status__iexact=${filteredBookings}`;
+
     const apiData = await dataFetch(URL)
     if (apiData?.success) {
       const dt = apiData?.data
@@ -51,6 +50,13 @@ const Booking = () => {
     }, 
   [filteredBookings, page, orderField, searchBookings])
 
+
+  const tname = ["id", "service__service_type__service_type", "user__username", "slotdatetime", "service_address", "service_status"]
+  const ttname = ["Ref Id", "Service Name", "User name", "Timeslot", "Address", "Status"]
+  const heads = tname.map((field, i) => {
+    return <TableHead key={i} name={field} titleName={ttname[i]} orderField={orderField} setOrderField={setOrderField} />
+  })
+
   let bookedMap = <tr></tr>
   if(bookings?.length > 0){
     bookedMap = bookings?.map((obj, i) => {
@@ -59,7 +65,7 @@ const Booking = () => {
           <td>{obj?.id}</td>
           <td>{obj?.getService}</td>
           <td>{obj.getUser}</td>
-          <td>{new Date(obj.slotdatetime).toLocaleString()}</td>
+          <td>{new Date(obj.dateLocal).toLocaleString()}</td>
           <td>{obj?.service_address}</td>
           <td style={obj?.service_status === "pending" ? {color: "yellow"} : obj?.service_status === "accepted" ? {color: "orange"} : obj?.service_status === "inprogress" ? {color: "green"} : obj?.service_status === "completed" ? {color: "aqua"}: obj?.service_status === "cancelled" ? {color: "#ab0202"} : {color: "red"} }>{obj?.service_status}</td>
           { 
@@ -126,12 +132,7 @@ const Booking = () => {
       <table>
         <thead>
           <tr>
-          <th onClick={() => setOrderField(orderField === "-id" ? "id" : "-id")} className="text-center"><span className="flex xflex"> Id {orderField === "-id" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-service__service_type__service_type" ? "service__service_type__service_type" : "-service__service_type__service_type")} className="text-center"><span className="flex xflex"> Service Name {orderField === "-service__service_type__service_type" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "user__username" ? "-user__username" : "user__username")} className="text-center"><span className="flex xflex"> User Name {orderField === "-user__username" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-slotdatetime" ? "slotdatetime" : "-slotdatetime")} className="text-center"><span className="flex xflex"> TimeSlot {orderField === "-slotdatetime" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-service_address" ? "service_address" : "-service_address")} className="text-center"><span className="flex xflex"> Addess {orderField === "-service_address" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-service_status" ? "service_status" : "-service_status")} className="text-center"><span className="flex xflex"> Stutus {orderField === "-service_status" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            {heads}
             {utype === "user" ? <th>Booking Requested</th> : <th>Booking Requests</th> }
           </tr>
         </thead>

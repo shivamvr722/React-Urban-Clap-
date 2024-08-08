@@ -2,10 +2,10 @@ import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import AddProviderServices from "./AddServiceProvider"
 
 const AddServicesPage = () => {
-  return(
+  return (
     <>
-    <NavigationBar />
-    <AddProviderServices />
+      <NavigationBar />
+      <AddProviderServices />
     </>
   )
 }

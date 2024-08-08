@@ -1,4 +1,3 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar"
 import { useDispatch, useSelector } from "react-redux"
@@ -6,11 +5,7 @@ import "./listAllUser.css"
 import { Link, useNavigate } from "react-router-dom"
 import profileDefault from "../../../assets/userprofileDefault.png"
 import useFetchData from "../../../Networks/useFetchData"
-import { debounce } from "lodash"
-import { RiArrowDownWideFill } from "react-icons/ri";
-import { RiArrowUpWideFill } from "react-icons/ri";
-
-// import { addUserList } from "../../../features/listUserSlice"
+import TableHead from "../../subcomponents/HeadingCoponets/TableHead"
 
 const ListAllUsers = () => {
   const {isLoading, dataFetch} = useFetchData();
@@ -18,12 +13,13 @@ const ListAllUsers = () => {
   const [intialUserData, setInitialUserData] = useState("")
   const [userData, setUserData] = useState("")
   const [filterUser, setFilterUser] = useState("")
+  const [searchField, setSearchField] = useState("")
   const [orderField, setOrderField] = useState("")
   const [userCategory, setUserCategory] = useState("")
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const navigate = useNavigate("")
-  const dispatch = useDispatch()
+
+
   
 
   // for profile image
@@ -37,12 +33,7 @@ const ListAllUsers = () => {
 
   // for fetching the users
   const users = async () => {
-    let URL = ""
-    if(userCategory === "ServiceProvider" || userCategory === "user" || userCategory === "SuperAdmin"){
-      URL = `userprofiles/?p=${page}&user_type__iexact=${userCategory}`;
-    } else {
-      URL = `userprofiles/?p=${page}&first_name__icontains=${userCategory}&ordering=${orderField}`;
-    }
+    const URL = `userprofiles/?p=${page}&search=${searchField}&ordering=${orderField}&user_type__iexact=${userCategory}`;
     const apiData = await dataFetch(URL);
     if (apiData?.success) {
       setInitialUserData(apiData?.data)
@@ -60,26 +51,9 @@ const ListAllUsers = () => {
     // }, 500)
     // return () => clearTimeout(callApi)
 
-  }, [page, filterUser, orderField, userCategory, setPage])
+  }, [page, filterUser, searchField, orderField, userCategory, setPage])
     
-  
-  // for filter the search
-  // useEffect(() => {
-  //   let usersFiltered = null
-  //   if(filterUser || userCategory){
-  //     if (userCategory){
-  //       usersFiltered = intialUserData.filter((user, i )=> (userCategory.toLowerCase() === user.user_type.toLowerCase()) && (user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase())))  
-  //     } else {
-  //       usersFiltered = intialUserData.filter((user, i )=> user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase()))
-  //     }
-  //     if(!usersFiltered.length){
-  //       return 
-  //     }
-  //     setUserData(usersFiltered)
-  //    } else {
-  //     setUserData(intialUserData)
-  //   }
-  // }, [filterUser, userCategory])
+
   
   if (userData){ 
     console.log(userData);
@@ -107,21 +81,19 @@ const ListAllUsers = () => {
       )
     })
 
-    // const theading = ["Index", "Profile Image", "First Name", "Last Name", "Email", "Contact", "User Type", "User id", "Update/View"]
-    // const theadingx = ["First Name", "Last Name", "Email", "Contact", "User Type"]
-    // const heading = theading.map((head, i)=>{
-    //   return <th onClick={() => setOrderField(orderField === "-message" ? "message" : "-message")} className="text-center"><span className="flex xflex"> Message {orderField === "-message" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-    //   //  <th key={head}>{head}</th>
-    // })
-
+  
+    const tname = ["first_name", "last_name", "email", "contact_number", "user_type", "id"]
+    const ttname = ["First Name", "Last Name", "Email", "Contact", "User Type", "User id"]
+    const heads = tname.map((field, i) => {
+      return <TableHead name={field} titleName={ttname[i]}  key={i} orderField={orderField} setOrderField={setOrderField} />
+    })
 
     return(
       <>
       <NavigationBar />
       {loading && <h1 className="loading">Loading...</h1>}
       <div className="search">
-
-        <input type="text" id="search" placeholder="Search here..." onChange={(e) => setUserCategory(e.target.value)} value={userCategory} />
+        <input type="text" id="search" placeholder="Search here..." onChange={(e) => setSearchField(e.target.value)} value={searchField} />
         <select onChange={(e)=> setUserCategory(e.target.value)} className="selectbox" name='user_type__iexact'>
           <option value={''}>All User</option>
           <option value={"ServiceProvider"}>Service Provider</option>
@@ -132,17 +104,10 @@ const ListAllUsers = () => {
       <table className="tableUList">
         <thead className="theadList">
           <tr>
-          {/* ["Index", "Profile Image", "First Name", "Last Name", "Email", "Contact", "User Type", "User id", "Update/View"] */}
             <th> Index </th>
             <th> Profile Image </th>
-            <th onClick={() => setOrderField(orderField === "-first_name" ? "first_name" : "-first_name")} className="text-center"><span className="flex xflex"> First Name {orderField === "-first_name" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-last_name" ? "last_name" : "-last_name")} className="text-center"><span className="flex xflex"> Last Name {orderField === "-last_name" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-email" ? "email" : "-email")} className="text-center"><span className="flex xflex"> Email {orderField === "-email" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-contact_number" ? "contact_number" : "-contact_number")} className="text-center"><span className="flex xflex"> Contact {orderField === "-contact_number" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-user_type" ? "user_type" : "-user_type")} className="text-center"><span className="flex xflex"> User Type {orderField === "-user_type" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-            <th onClick={() => setOrderField(orderField === "-id" ? "id" : "-id")} className="text-center"><span className="flex xflex"> User id {orderField === "-id" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+            {heads}
             <th>Update/View</th>
-          {/* {heading} */}
           </tr>
         </thead>
         <tbody className="tbodyList">
@@ -155,15 +120,25 @@ const ListAllUsers = () => {
       </>
     )
   }
-  
 }
 
 export default ListAllUsers
 
- {/* <input type="text" id="search" placeholder="Search here..." onChange={(e) => setFilterUser(e.target.value)} value={filterUser} />
-        <select onChange={(e)=> setUserCategory(e.target.value)} className="selectbox">
-          <option value={''}>All User</option>
-          <option value={"ServiceProvider"}>Service Provider</option>
-          <option value={"user"}>User</option>
-          <option value={"SuperAdmin"}>Super Admin</option>
-        </select> */}
+
+// for filter the search
+  // useEffect(() => {
+  //   let usersFiltered = null
+  //   if(filterUser || userCategory){
+  //     if (userCategory){
+  //       usersFiltered = intialUserData.filter((user, i )=> (userCategory.toLowerCase() === user.user_type.toLowerCase()) && (user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase())))  
+  //     } else {
+  //       usersFiltered = intialUserData.filter((user, i )=> user.first_name.includes(filterUser.toLowerCase()) || user.last_name.includes(filterUser.toLowerCase()) || user.email.includes(filterUser.toLowerCase()))
+  //     }
+  //     if(!usersFiltered.length){
+  //       return 
+  //     }
+  //     setUserData(usersFiltered)
+  //    } else {
+  //     setUserData(intialUserData)
+  //   }
+  // }, [filterUser, userCategory])

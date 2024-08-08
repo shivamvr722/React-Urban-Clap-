@@ -3,8 +3,7 @@ import useFetchData from "../../../Networks/useFetchData";
 import NavigationBar from "../../subcomponents/Header/navbar/Navbar";
 import "./notifications.css"
 import { useSelector } from "react-redux";
-import { RiArrowDownWideFill } from "react-icons/ri";
-import { RiArrowUpWideFill } from "react-icons/ri";
+import TableHead from "../../subcomponents/HeadingCoponets/TableHead";
 
 
 const PushedNotification  = () => {
@@ -19,9 +18,9 @@ const PushedNotification  = () => {
   const fetchOffersAll = async () => {
     let URL = "";
     if(currentUser.user_type === "superadmin"){
-      URL = `offerstouser/?p=${page}&message__icontains=${filterMessage}&ordering=${orderField}`
+      URL = `offerstouser/?p=${page}&search=${filterMessage}&ordering=${orderField}`
     } else {
-      URL = `offernotification/?p=${page}&message__icontains=${filterMessage}`
+      URL = `offernotification/?p=${page}&search=${filterMessage}&ordering=${orderField}`
     }
     const apiData = await dataFetch(URL)
     if (apiData?.success) {
@@ -42,6 +41,11 @@ const PushedNotification  = () => {
     })
   }
 
+  const tname = ["user__username", "message", "created_at"]
+  const ttname = ["User name", "Message", "Notification Time"]
+  const heads = tname.map((field, i) => {
+    return <TableHead key={i} name={field} titleName={ttname[i]} orderField={orderField} setOrderField={setOrderField} />
+  })
 
   return(
     <div>
@@ -53,9 +57,7 @@ const PushedNotification  = () => {
           <thead>
             <tr>
               <th>Ref Id</th>
-              <th onClick={() => setOrderField(orderField === "-user__username" ? "user__username" : "-user__username")} className="text-center"><span className="flex xflex"> User name {orderField === "-user__username" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-              <th onClick={() => setOrderField(orderField === "-message" ? "message" : "-message")} className="text-center"><span className="flex xflex"> Message {orderField === "-message" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
-              <th onClick={() => setOrderField(orderField === "-created_at" ? "created_at" : "-created_at")}><span className="flex xflex"> Notification Time {orderField === "-created_at" ? <RiArrowDownWideFill /> : <RiArrowUpWideFill />} </span></th>
+              {heads}
             </tr>
           </thead>
           <tbody>
