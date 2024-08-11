@@ -1,11 +1,28 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import SingIn from '../components/pages/Authentication/SingIn';
-import SingUp from '../components/pages/Authentication/SignUp';
-import Home from '../components/pages/home/Home';
-import IsAdminRoutes from './IsAdminRoutes';
+import './App.css';
+import { BrowserRouter, Routes, Route, createBrowserRoute, createRouteFromElement } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { addUser } from './features/usersSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import SingUp from './components/pages/Authentication/SignUp';
+import SingIn from './components/pages/Authentication/SingIn';
+import ForgetPassword from './components/pages/Authentication/ForgetPassword';
+import ConfirmpPassword from './components/pages/Authentication/ConfirmPassword';
+import ListAllUsers from './components/pages/userprofile/ListAllUsers';
+import Home from './components/pages/home/Home';
+import UserprofileShow from './components/pages/userprofile/Userprofile';
+import Logout from './components/pages/Authentication/Logout';
+import UnAuthToken from './components/pages/Authentication/UnAuthToken';
+import ServicePage from './components/pages/services/ServicePage';
+import RatingsReviewPage from './components/pages/ReviewRatings/RatingReviewPage';
+import Booking from './components/pages/Booking/Booking';
+import LocationPage from './components/pages/Locations/LocationPage';
+import useFetchData from './Networks/useFetchData';
+import PushedNotification from './components/pages/notification/PushedNotification';
+import NotFound from './components/subcomponents/NotFound';
+import ProvidersList from './components/pages/ServiceProvider/ProvidersList';
+import AddServicesPage from './components/pages/ServiceProvider/AddServicesPage';
+import Notification from './components/pages/notification/Notifications';import { Route } from "react-router"
 
-import { Route } from "react-router"
-import {createBrowserRoute, createRouteFromElement} from "react-router-dom"
 
 const routerDefinition = createRouteFromElement(
     <Route>
